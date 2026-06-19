@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+      background: var(--bg);
+      font-family: 'IBM Plex Sans', sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+
+      --bg: #FBFAF7;
+      --surface: #FFFFFF;
+      --ink: #1B1F1D;
+      --ink-soft: #57605B;
+      --ink-faint: #8A938E;
+      --line: #E5E2DA;
+      --accent: #2D63D6;
+      --accent-ink: #FBFAF7;
+      --accent-soft: rgba(45,99,214,0.09);
+      --code-bg: #121620;
+      --code-line: rgba(255,255,255,0.09);
+      --shadow: 0 24px 60px rgba(20,28,40,0.16);
+      color-scheme: light;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #0D0F12;
+      --surface: #15181C;
+      --ink: #EEF1F4;
+      --ink-soft: #98A1AC;
+      --ink-faint: #69727C;
+      --line: rgba(255,255,255,0.1);
+      --accent: #6FA0FF;
+      --accent-ink: #0D0F12;
+      --accent-soft: rgba(111,160,255,0.13);
+      --code-bg: #15181C;
+      --code-line: rgba(255,255,255,0.09);
+      --shadow: 0 24px 60px rgba(0,0,0,0.55);
+      color-scheme: dark;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body[data-theme="system"] {
+        --bg: #0D0F12;
+        --surface: #15181C;
+        --ink: #EEF1F4;
+        --ink-soft: #98A1AC;
+        --ink-faint: #69727C;
+        --line: rgba(255,255,255,0.1);
+        --accent: #6FA0FF;
+        --accent-ink: #0D0F12;
+        --accent-soft: rgba(111,160,255,0.13);
+        --code-bg: #15181C;
+        --code-line: rgba(255,255,255,0.09);
+        --shadow: 0 24px 60px rgba(0,0,0,0.55);
+        color-scheme: dark;
+      }
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 48px;
+      border-bottom: 1px solid var(--line);
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-logo-badge {
+      width: 34px;
+      height: 30px;
+      border-radius: 7px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .nav-logo-name span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+
+    .nav-link.active { color: var(--accent); }
+
+    .nav-link-gh {
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 7px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .theme-switcher {
+      display: flex;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+    }
+
+    .theme-btn {
+      padding: 7px 12px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--ink-faint);
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .theme-btn + .theme-btn {
+      border-left: 1px solid var(--line);
+    }
+
+    /* ── MAIN ── */
+    .site-main { flex: 1; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 48px;
+      border-top: 1px solid var(--line);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-badge {
+      width: 26px;
+      height: 22px;
+      border-radius: 5px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      font-weight: 500;
+    }
+
+    .footer-copy {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-faint);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+    }
+
+    .footer-links a {
+      color: var(--ink-faint);
+      cursor: pointer;
+    }
+
+    /* ── CODE ── */
+    pre {
+      margin: 0;
+      padding: 20px 24px;
+      background: var(--code-bg);
+      border: 1px solid var(--code-line);
+      border-radius: 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: #CBD2DF;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14.5px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+
+    .tok-kw  { color: #C792EA; }
+    .tok-ty  { color: #8EC9FF; }
+    .tok-str { color: #5FD3AB; }
+    .tok-num { color: #F2B36B; }
+    .tok-cm  { color: #6E7A92; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .site-nav { padding: 14px 20px; }
+      .site-footer { padding: 20px; }
+    }
+  </style>
+
+  <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <a href="{{ '/' | relative_url }}" class="nav-logo">
+      <div class="nav-logo-badge">pdf</div>
+      <span class="nav-logo-name">Majorsilence<span>.Pdf</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="{{ '/' | relative_url }}" class="nav-link{% if page.url == '/' or page.url == '/index.html' %} active{% endif %}">home</a>
+      <a href="{{ '/docs/' | relative_url }}" class="nav-link{% if page.url contains '/docs' %} active{% endif %}">docs</a>
+      <span class="nav-link">reporting</span>
+      <a href="https://github.com/majorsilence" class="nav-link-gh" target="_blank" rel="noopener">github ↗</a>
+      <div class="theme-switcher">
+        <button class="theme-btn" data-theme-target="light">light</button>
+        <button class="theme-btn" data-theme-target="dark">dark</button>
+        <button class="theme-btn" data-theme-target="system">auto</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="site-main">
+    {{ content }}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-logo">
+      <div class="footer-badge">pdf</div>
+      <span class="footer-copy">MIT licensed · © 2026 Majorsilence.Pdf</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/majorsilence" target="_blank" rel="noopener">github</a>
+      <a href="https://www.nuget.org/packages/Majorsilence.Pdf" target="_blank" rel="noopener">nuget</a>
+      <a href="{{ '/docs/' | relative_url }}">docs</a>
+    </div>
+  </footer>
+
+</body>
+</html>

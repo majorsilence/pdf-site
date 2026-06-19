@@ -1,0 +1,12 @@
+title: "Majorsilence.Pdf"
+description: "A modern, self-contained PDF library for .NET 8 & 10. Zero dependencies, no native binaries."
+baseurl: ""
+url: ""
+
+permalink: pretty
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

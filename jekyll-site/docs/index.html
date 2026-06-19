@@ -1,0 +1,132 @@
+---
+layout: default
+title: "Quick Start"
+description: "Get started with Majorsilence.Pdf — your first PDF in two minutes."
+---
+
+<style>
+  .docs-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 64px 32px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .docs-back {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .docs-back:hover { text-decoration: underline; }
+
+  .docs-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .docs-title {
+    font-family: 'Newsreader', serif;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+
+  @media (max-width: 600px) {
+    .docs-title { font-size: 38px; }
+  }
+
+  .docs-lead {
+    font-family: 'Newsreader', serif;
+    font-size: 21px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 8px 0 0;
+  }
+
+  .docs-rule {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 12px 0;
+  }
+
+  .docs-h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 8px 0 0;
+  }
+
+  .docs-p {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .docs-p-mt {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 12px 0 0;
+  }
+</style>
+
+<div class="docs-wrap">
+  <a href="{{ '/' | relative_url }}" class="docs-back">← Home</a>
+
+  <div class="docs-eyebrow">Quick start</div>
+
+  <h1 class="docs-title">Your first PDF in two minutes</h1>
+
+  <p class="docs-lead">Majorsilence.Pdf is a tiny, self-contained PDF library for .NET. Add one package, create a document, draw some text and tables, and save. No native binaries, no extra dependencies.</p>
+
+  <hr class="docs-rule">
+
+  <h2 class="docs-h2">Installation</h2>
+  <p class="docs-p">A single package — no companions required:</p>
+  <pre><span class="tok-cm"># the whole library, nothing else to add</span>
+dotnet add package Majorsilence.Pdf</pre>
+
+  <h2 class="docs-h2">Hello, PDF</h2>
+  <p class="docs-p">Create a <code>PdfDocument</code>, add a page, draw, and save. The document is <code>IDisposable</code> — wrap it in <code>using</code>.</p>
+  <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+
+<span class="tok-kw">using var</span> doc = <span class="tok-kw">new</span> <span class="tok-ty">PdfDocument</span>();
+<span class="tok-kw">var</span> page = doc.AddPage(PageSize.<span class="tok-str">A4</span>);
+
+page.Text(<span class="tok-str">"Hello, PDF"</span>, x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, size: <span class="tok-num">24</span>);
+page.Line(<span class="tok-num">72</span>, <span class="tok-num">96</span>, <span class="tok-num">520</span>, <span class="tok-num">96</span>);
+
+doc.Save(<span class="tok-str">"hello.pdf"</span>);</pre>
+
+  <h2 class="docs-h2">Text, tables &amp; images</h2>
+  <p class="docs-p">The drawing surface is fluent. Set a font once and chain calls, or pass a table of rows and let the layout flow across pages.</p>
+  <pre><span class="tok-kw">var</span> page = doc.AddPage(PageSize.<span class="tok-str">Letter</span>);
+
+page.SetFont(Font.<span class="tok-str">Helvetica</span>, <span class="tok-num">11</span>)
+    .Text(<span class="tok-str">"Invoice #1024"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, size: <span class="tok-num">20</span>)
+    .Image(logoBytes, x: <span class="tok-num">430</span>, y: <span class="tok-num">64</span>, width: <span class="tok-num">110</span>);
+
+page.Table(rows, <span class="tok-num">72</span>, <span class="tok-num">130</span>, columns: <span class="tok-kw">new</span>[] { <span class="tok-str">"Item"</span>, <span class="tok-str">"Qty"</span>, <span class="tok-str">"Total"</span> });</pre>
+
+  <h2 class="docs-h2">Save or stream</h2>
+  <p class="docs-p">Write to a path, or to any <code>Stream</code> — ideal for returning a PDF straight from an ASP.NET endpoint.</p>
+  <pre><span class="tok-cm">// to disk</span>
+doc.Save(<span class="tok-str">"report.pdf"</span>);
+
+<span class="tok-cm">// to a stream — e.g. an HTTP response</span>
+<span class="tok-kw">await</span> doc.SaveAsync(Response.Body);</pre>
+
+  <p class="docs-p-mt">That's the whole surface for most reports. Need full RDL reports, Excel, HTML and CSV too? Reach for <a href="{{ '/' | relative_url }}" style="color: var(--accent);">Majorsilence Reporting</a>, the larger engine this library powers.</p>
+</div>
