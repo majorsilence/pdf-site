@@ -6,12 +6,12 @@ description: "Get started with Majorsilence.Pdf — your first PDF in two minute
 
 <style>
   .docs-wrap {
-    max-width: 680px;
+    max-width: 720px;
     margin: 0 auto;
-    padding: 64px 32px 80px;
+    padding: 64px 32px 96px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0;
   }
 
   .docs-back {
@@ -19,6 +19,8 @@ description: "Get started with Majorsilence.Pdf — your first PDF in two minute
     font-size: 13px;
     color: var(--accent);
     text-decoration: none;
+    display: inline-block;
+    margin-bottom: 28px;
   }
 
   .docs-back:hover { text-decoration: underline; }
@@ -29,6 +31,7 @@ description: "Get started with Majorsilence.Pdf — your first PDF in two minute
     color: var(--ink-faint);
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    margin-bottom: 16px;
   }
 
   .docs-title {
@@ -36,49 +39,154 @@ description: "Get started with Majorsilence.Pdf — your first PDF in two minute
     font-size: 52px;
     font-weight: 500;
     color: var(--ink);
-    margin: 0;
+    margin: 0 0 20px;
     line-height: 1.08;
     letter-spacing: -0.015em;
   }
 
   @media (max-width: 600px) {
-    .docs-title { font-size: 38px; }
+    .docs-title { font-size: 36px; }
   }
 
   .docs-lead {
     font-family: 'Newsreader', serif;
-    font-size: 21px;
+    font-size: 20px;
     line-height: 1.6;
     color: var(--ink-soft);
-    margin: 8px 0 0;
+    margin: 0 0 36px;
   }
 
-  .docs-rule {
+  hr.docs-rule {
     border: none;
     border-top: 1px solid var(--line);
-    margin: 12px 0;
+    margin: 40px 0;
   }
 
+  /* section heading */
   .docs-h2 {
     font-family: 'Newsreader', serif;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 500;
     color: var(--ink);
-    margin: 8px 0 0;
+    margin: 0 0 12px;
+  }
+
+  .docs-h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 28px 0 8px;
   }
 
   .docs-p {
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.75;
     color: var(--ink-soft);
-    margin: 0;
+    margin: 0 0 16px;
   }
 
-  .docs-p-mt {
-    font-size: 17px;
-    line-height: 1.75;
+  /* stacked section = heading + optional p + pre */
+  .docs-section {
+    margin-bottom: 40px;
+  }
+
+  /* inline code */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* API reference table */
+  .api-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-bottom: 16px;
+  }
+
+  .api-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .api-table td {
+    padding: 9px 12px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
     color: var(--ink-soft);
-    margin: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .api-table td:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .api-table tr:last-child td { border-bottom: none; }
+  .api-table tbody tr:nth-child(even) td { background: var(--accent-soft); }
+
+  /* toc */
+  .docs-toc {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+
+  .docs-toc-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .docs-toc ol {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 24px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 500px) {
+    .docs-toc ol { grid-template-columns: 1fr; }
+  }
+
+  .docs-toc a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .docs-toc a:hover { text-decoration: underline; }
+
+  /* note box */
+  .docs-note {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
   }
 </style>
 
@@ -86,47 +194,422 @@ description: "Get started with Majorsilence.Pdf — your first PDF in two minute
   <a href="{{ '/' | relative_url }}" class="docs-back">← Home</a>
 
   <div class="docs-eyebrow">Quick start</div>
-
   <h1 class="docs-title">Your first PDF in two minutes</h1>
+  <p class="docs-lead">Majorsilence.Pdf is a zero-dependency, self-contained PDF library for .NET 8 and 10. One package, no native binaries — create documents, draw text, shapes, and images, embed TrueType fonts, and save to a file or stream.</p>
 
-  <p class="docs-lead">Majorsilence.Pdf is a tiny, self-contained PDF library for .NET. Add one package, create a document, draw some text and tables, and save. No native binaries, no extra dependencies.</p>
+  <!-- TOC -->
+  <div class="docs-toc">
+    <div class="docs-toc-title">On this page</div>
+    <ol>
+      <li><a href="#install">Installation</a></li>
+      <li><a href="#hello">Hello, PDF</a></li>
+      <li><a href="#styles">API styles</a></li>
+      <li><a href="#text">Text &amp; TextStyle</a></li>
+      <li><a href="#shapes">Shapes</a></li>
+      <li><a href="#lines">Lines &amp; curves</a></li>
+      <li><a href="#images">Images</a></li>
+      <li><a href="#annotations">Links &amp; tooltips</a></li>
+      <li><a href="#fonts">TrueType fonts</a></li>
+      <li><a href="#multipage">Multi-page documents</a></li>
+      <li><a href="#save">Save options</a></li>
+      <li><a href="#metadata">Metadata &amp; version</a></li>
+    </ol>
+  </div>
 
-  <hr class="docs-rule">
+  <hr class="docs-rule" id="install">
 
-  <h2 class="docs-h2">Installation</h2>
-  <p class="docs-p">A single package — no companions required:</p>
-  <pre><span class="tok-cm"># the whole library, nothing else to add</span>
-dotnet add package Majorsilence.Pdf</pre>
+  <!-- ── INSTALLATION ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Installation</h2>
+    <p class="docs-p">A single NuGet package — no companion libraries required:</p>
+    <pre><span class="tok-cm"># .NET CLI</span>
+dotnet add package Majorsilence.Pdf
 
-  <h2 class="docs-h2">Hello, PDF</h2>
-  <p class="docs-p">Create a <code>PdfDocument</code>, add a page, draw, and save. The document is <code>IDisposable</code> — wrap it in <code>using</code>.</p>
-  <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+<span class="tok-cm"># Package Manager Console</span>
+Install-Package Majorsilence.Pdf</pre>
+  </div>
 
-<span class="tok-kw">using var</span> doc = <span class="tok-kw">new</span> <span class="tok-ty">PdfDocument</span>();
-<span class="tok-kw">var</span> page = doc.AddPage(PageSize.<span class="tok-str">A4</span>);
+  <hr class="docs-rule" id="hello">
 
-page.Text(<span class="tok-str">"Hello, PDF"</span>, x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, size: <span class="tok-num">24</span>);
-page.Line(<span class="tok-num">72</span>, <span class="tok-num">96</span>, <span class="tok-num">520</span>, <span class="tok-num">96</span>);
+  <!-- ── HELLO PDF ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Hello, PDF</h2>
+    <p class="docs-p">Create a document with <code>PdfDocument.Create()</code>, add a page, draw on the canvas, and save. Coordinates are in PDF points (1 pt = 1/72 inch), with the top-left corner as the origin — Y increases downward.</p>
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
 
-doc.Save(<span class="tok-str">"hello.pdf"</span>);</pre>
+PdfDocument.Create()
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Hello, PDF!"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">24</span>).WithBold());
+        canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">96</span>, <span class="tok-num">520</span>, <span class="tok-num">96</span>);
+    })
+    .Save(<span class="tok-str">"hello.pdf"</span>);</pre>
+  </div>
 
-  <h2 class="docs-h2">Text, tables &amp; images</h2>
-  <p class="docs-p">The drawing surface is fluent. Set a font once and chain calls, or pass a table of rows and let the layout flow across pages.</p>
-  <pre><span class="tok-kw">var</span> page = doc.AddPage(PageSize.<span class="tok-str">Letter</span>);
+  <hr class="docs-rule" id="styles">
 
-page.SetFont(Font.<span class="tok-str">Helvetica</span>, <span class="tok-num">11</span>)
-    .Text(<span class="tok-str">"Invoice #1024"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, size: <span class="tok-num">20</span>)
-    .Image(logoBytes, x: <span class="tok-num">430</span>, y: <span class="tok-num">64</span>, width: <span class="tok-num">110</span>);
+  <!-- ── API STYLES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">API styles — callback vs incremental</h2>
+    <p class="docs-p">Choose whichever fits your code structure:</p>
 
-page.Table(rows, <span class="tok-num">72</span>, <span class="tok-num">130</span>, columns: <span class="tok-kw">new</span>[] { <span class="tok-str">"Item"</span>, <span class="tok-str">"Qty"</span>, <span class="tok-str">"Total"</span> });</pre>
+    <h3 class="docs-h3">Callback style (fluent chain)</h3>
+    <p class="docs-p">Pass a drawing lambda to <code>AddPage</code>. The document is returned so you can keep chaining. Best for short documents built in one pass.</p>
+    <pre>PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"My Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Chapter 1"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    })
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Chapter 2"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    })
+    .Save(<span class="tok-str">"report.pdf"</span>);</pre>
 
-  <h2 class="docs-h2">Save or stream</h2>
-  <p class="docs-p">Write to a path, or to any <code>Stream</code> — ideal for returning a PDF straight from an ASP.NET endpoint.</p>
-  <pre><span class="tok-cm">// to disk</span>
+    <h3 class="docs-h3">Incremental style</h3>
+    <p class="docs-p"><code>AddPage</code> without a callback returns the <code>PdfCanvas</code> directly. Useful when building content imperatively, e.g. inside a loop.</p>
+    <pre><span class="tok-kw">var</span> doc = PdfDocument.Create().WithTitle(<span class="tok-str">"My Report"</span>);
+
+<span class="tok-kw">foreach</span> (<span class="tok-kw">var</span> chapter <span class="tok-kw">in</span> chapters)
+{
+    <span class="tok-kw">var</span> canvas = doc.AddPage(PageSizes.A4);
+    canvas.DrawText(chapter.Title, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+        TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    <span class="tok-cm">// ... draw body ...</span>
+}
+
+doc.Save(<span class="tok-str">"report.pdf"</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="text">
+
+  <!-- ── TEXT ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Text &amp; TextStyle</h2>
+    <p class="docs-p"><code>TextStyle</code> is immutable. Every <code>With*</code> method returns a new instance — the original is unchanged. Build a base style once, then derive variants from it.</p>
+
+    <pre><span class="tok-kw">var</span> heading = TextStyle.Default
+    .WithFamily(<span class="tok-str">"Helvetica"</span>)
+    .WithSize(<span class="tok-num">22</span>)
+    .WithBold()
+    .WithColor(PdfColor.FromHex(<span class="tok-str">"#1A56A0"</span>));
+
+<span class="tok-kw">var</span> body = TextStyle.Default
+    .WithFamily(<span class="tok-str">"Times-Roman"</span>)
+    .WithSize(<span class="tok-num">11</span>);
+
+<span class="tok-kw">var</span> mono = TextStyle.Default
+    .WithFamily(<span class="tok-str">"Courier"</span>)
+    .WithSize(<span class="tok-num">10</span>);
+
+canvas.DrawText(<span class="tok-str">"Invoice #1024"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, heading);
+canvas.DrawText(<span class="tok-str">"Due: July 17, 2026"</span>, <span class="tok-num">72</span>, <span class="tok-num">106</span>, body);
+
+<span class="tok-cm">// Alignment</span>
+canvas.DrawText(<span class="tok-str">"Right-aligned"</span>, <span class="tok-num">540</span>, <span class="tok-num">72</span>,
+    body.WithAlignment(TextAlignment.Right));
+
+<span class="tok-cm">// Decorations</span>
+canvas.DrawText(<span class="tok-str">"underlined"</span>,     <span class="tok-num">72</span>, <span class="tok-num">140</span>, body.WithUnderline());
+canvas.DrawText(<span class="tok-str">"strikethrough"</span>,  <span class="tok-num">72</span>, <span class="tok-num">160</span>, body.WithStrikethrough());
+canvas.DrawText(<span class="tok-str">"overline"</span>,       <span class="tok-num">72</span>, <span class="tok-num">180</span>, body.WithOverline());</pre>
+
+    <h3 class="docs-h3">TextStyle reference</h3>
+    <table class="api-table">
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>.WithFamily(name)</td><td>Standard font by name. Built-in: <code>Helvetica</code>, <code>Times-Roman</code>, <code>Courier</code>, <code>Symbol</code>, <code>ZapfDingbats</code>. Also accepts any family registered in <code>FontRegistry</code>.</td></tr>
+        <tr><td>.WithFontFile(path)</td><td>Embed a TrueType / OpenType font by absolute file path. Takes precedence over <code>WithFamily</code>.</td></tr>
+        <tr><td>.WithSize(pts)</td><td>Font size in PDF points. Default: 12.</td></tr>
+        <tr><td>.WithColor(color)</td><td>Text foreground colour. Default: <code>PdfColor.Black</code>.</td></tr>
+        <tr><td>.WithBold()</td><td>Bold weight.</td></tr>
+        <tr><td>.WithItalic()</td><td>Italic style.</td></tr>
+        <tr><td>.WithAlignment(a)</td><td><code>TextAlignment.Left</code> (default), <code>Center</code>, <code>Right</code>. X is the reference point.</td></tr>
+        <tr><td>.WithUnderline()</td><td>Underline decoration.</td></tr>
+        <tr><td>.WithStrikethrough()</td><td>Strikethrough decoration.</td></tr>
+        <tr><td>.WithOverline()</td><td>Overline decoration.</td></tr>
+        <tr><td>.WithVertical()</td><td>Rotate text 90° counter-clockwise.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="docs-h3">PdfColor</h3>
+    <pre><span class="tok-cm">// Named colours</span>
+PdfColor.Black    PdfColor.White    PdfColor.Red
+PdfColor.Green    PdfColor.Blue     PdfColor.Yellow
+PdfColor.Orange   PdfColor.Gray     PdfColor.LightGray   PdfColor.DarkGray
+
+<span class="tok-cm">// From CSS hex string</span>
+PdfColor.FromHex(<span class="tok-str">"#1A56A0"</span>)
+
+<span class="tok-cm">// From RGB bytes (0–255)</span>
+PdfColor.FromRgb(<span class="tok-num">26</span>, <span class="tok-num">86</span>, <span class="tok-num">160</span>)</pre>
+
+    <h3 class="docs-h3">Measuring text width</h3>
+    <p class="docs-p">Use <code>MeasureTextWidth</code> to position labels relative to other content:</p>
+    <pre><span class="tok-kw">float</span> w = canvas.MeasureTextWidth(<span class="tok-str">"Hello"</span>, body);
+canvas.DrawText(<span class="tok-str">"World"</span>, <span class="tok-num">72</span> + w + <span class="tok-num">4</span>, <span class="tok-num">72</span>, body);</pre>
+  </div>
+
+  <hr class="docs-rule" id="shapes">
+
+  <!-- ── SHAPES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Shapes</h2>
+    <p class="docs-p"><code>ShapeStyle</code> controls fill and stroke independently. All shape methods accept an optional <code>ShapeStyle</code>; the default is a 1 pt black stroke with no fill.</p>
+
+    <pre><span class="tok-cm">// Rectangles</span>
+canvas.DrawRectangle(<span class="tok-num">50</span>, <span class="tok-num">50</span>, <span class="tok-num">200</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Filled(PdfColor.LightGray));
+
+canvas.DrawRectangle(<span class="tok-num">50</span>, <span class="tok-num">150</span>, <span class="tok-num">200</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Stroked(PdfColor.Black, width: <span class="tok-num">2</span>));
+
+canvas.DrawRectangle(<span class="tok-num">50</span>, <span class="tok-num">250</span>, <span class="tok-num">200</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Filled(PdfColor.FromHex(<span class="tok-str">"#E8F4FF"</span>))
+              .WithStroke(PdfColor.Blue, width: <span class="tok-num">1</span>));
+
+canvas.DrawRectangle(<span class="tok-num">50</span>, <span class="tok-num">350</span>, <span class="tok-num">200</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Stroked(PdfColor.DarkGray).Dashed());
+
+<span class="tok-cm">// Ellipses (same ShapeStyle options)</span>
+canvas.DrawEllipse(<span class="tok-num">300</span>, <span class="tok-num">50</span>, <span class="tok-num">150</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Filled(PdfColor.Blue));
+
+<span class="tok-cm">// Polygons</span>
+<span class="tok-kw">var</span> triangle = <span class="tok-kw">new</span> List&lt;(<span class="tok-kw">float</span> x, <span class="tok-kw">float</span> y)&gt;
+{
+    (<span class="tok-num">300</span>, <span class="tok-num">200</span>), (<span class="tok-num">400</span>, <span class="tok-num">350</span>), (<span class="tok-num">200</span>, <span class="tok-num">350</span>)
+};
+canvas.DrawPolygon(triangle,
+    ShapeStyle.Filled(PdfColor.Orange)
+              .WithStroke(PdfColor.DarkGray));</pre>
+
+    <h3 class="docs-h3">ShapeStyle reference</h3>
+    <table class="api-table">
+      <thead><tr><th>Factory / method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>ShapeStyle.Filled(color)</td><td>Solid fill, no stroke.</td></tr>
+        <tr><td>ShapeStyle.Stroked(color, width)</td><td>Stroke only, no fill. Width defaults to 1.</td></tr>
+        <tr><td>.WithFill(color)</td><td>Add or replace fill colour.</td></tr>
+        <tr><td>.WithStroke(color, width)</td><td>Add or replace stroke colour and width.</td></tr>
+        <tr><td>.WithNoFill()</td><td>Remove fill.</td></tr>
+        <tr><td>.WithNoStroke()</td><td>Remove stroke.</td></tr>
+        <tr><td>.Dashed()</td><td>Dashed line style for the stroke.</td></tr>
+        <tr><td>.Dotted()</td><td>Dotted line style for the stroke.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="lines">
+
+  <!-- ── LINES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Lines &amp; curves</h2>
+    <p class="docs-p"><code>StrokeStyle</code> is to lines what <code>ShapeStyle</code> is to filled shapes.</p>
+
+    <pre><span class="tok-cm">// Straight lines</span>
+canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">100</span>, <span class="tok-num">520</span>, <span class="tok-num">100</span>);  <span class="tok-cm">// 1 pt solid black</span>
+
+canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">130</span>, <span class="tok-num">520</span>, <span class="tok-num">130</span>,
+    StrokeStyle.Default.WithWidth(<span class="tok-num">2</span>).WithColor(PdfColor.Blue));
+
+canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">160</span>, <span class="tok-num">520</span>, <span class="tok-num">160</span>,
+    StrokeStyle.Default.WithWidth(<span class="tok-num">1</span>).Dashed());
+
+<span class="tok-cm">// Smooth curve through control points (Catmull-Rom spline)</span>
+<span class="tok-kw">var</span> pts = <span class="tok-kw">new</span> List&lt;(<span class="tok-kw">float</span>, <span class="tok-kw">float</span>)&gt;
+{
+    (<span class="tok-num">72</span>, <span class="tok-num">300</span>), (<span class="tok-num">150</span>, <span class="tok-num">260</span>), (<span class="tok-num">250</span>, <span class="tok-num">320</span>),
+    (<span class="tok-num">350</span>, <span class="tok-num">270</span>), (<span class="tok-num">450</span>, <span class="tok-num">310</span>), (<span class="tok-num">520</span>, <span class="tok-num">280</span>)
+};
+canvas.DrawCurve(pts,
+    StrokeStyle.Default.WithWidth(<span class="tok-num">2</span>).WithColor(PdfColor.Red));</pre>
+  </div>
+
+  <hr class="docs-rule" id="images">
+
+  <!-- ── IMAGES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Images</h2>
+    <p class="docs-p"><code>DrawImage</code> accepts either raw JPEG bytes or raw RGB24 bytes (3 bytes per pixel, row-major). The image is placed with its top-left corner at <code>(x, y)</code> and scaled to the specified dimensions.</p>
+
+    <pre><span class="tok-cm">// JPEG from disk</span>
+<span class="tok-kw">byte</span>[] jpeg = File.ReadAllBytes(<span class="tok-str">"logo.jpg"</span>);
+canvas.DrawImage(jpeg, pixelWidth: <span class="tok-num">400</span>, pixelHeight: <span class="tok-num">200</span>,
+    isJpeg: <span class="tok-kw">true</span>, x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, width: <span class="tok-num">200</span>, height: <span class="tok-num">100</span>);
+
+<span class="tok-cm">// Raw RGB24 (e.g. a gradient generated in code)</span>
+<span class="tok-kw">const int</span> W = <span class="tok-num">200</span>, H = <span class="tok-num">150</span>;
+<span class="tok-kw">var</span> rgb = <span class="tok-kw">new byte</span>[W * H * <span class="tok-num">3</span>];
+<span class="tok-kw">for</span> (<span class="tok-kw">int</span> row = <span class="tok-num">0</span>; row &lt; H; row++)
+    <span class="tok-kw">for</span> (<span class="tok-kw">int</span> col = <span class="tok-num">0</span>; col &lt; W; col++)
+    {
+        <span class="tok-kw">int</span> i = (row * W + col) * <span class="tok-num">3</span>;
+        rgb[i]     = (<span class="tok-kw">byte</span>)(col * <span class="tok-num">255</span> / W);   <span class="tok-cm">// R</span>
+        rgb[i + <span class="tok-num">1</span>] = (<span class="tok-kw">byte</span>)(row * <span class="tok-num">255</span> / H);   <span class="tok-cm">// G</span>
+        rgb[i + <span class="tok-num">2</span>] = <span class="tok-num">128</span>;                     <span class="tok-cm">// B</span>
+    }
+canvas.DrawImage(rgb, W, H, isJpeg: <span class="tok-kw">false</span>,
+    x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, width: <span class="tok-num">200</span>, height: <span class="tok-num">150</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="annotations">
+
+  <!-- ── ANNOTATIONS ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Links &amp; tooltips</h2>
+    <p class="docs-p">Add clickable hyperlinks or hover tooltips over any rectangular area. The area is defined as top-left <code>(x, y)</code> plus <code>width</code> and <code>height</code>.</p>
+
+    <pre><span class="tok-kw">var</span> linkStyle = TextStyle.Default
+    .WithColor(PdfColor.Blue).WithUnderline();
+
+canvas.DrawText(<span class="tok-str">"Visit majorsilence.com"</span>, <span class="tok-num">72</span>, <span class="tok-num">110</span>, linkStyle);
+canvas.AddLink(<span class="tok-num">72</span>, <span class="tok-num">96</span>, width: <span class="tok-num">220</span>, height: <span class="tok-num">18</span>,
+    uri: <span class="tok-str">"https://majorsilence.com"</span>);
+
+<span class="tok-cm">// Tooltip (shows in supporting PDF viewers on hover)</span>
+canvas.DrawRectangle(<span class="tok-num">72</span>, <span class="tok-num">140</span>, <span class="tok-num">200</span>, <span class="tok-num">40</span>,
+    ShapeStyle.Filled(PdfColor.LightGray).WithStroke(PdfColor.Gray));
+canvas.DrawText(<span class="tok-str">"Hover for info"</span>, <span class="tok-num">82</span>, <span class="tok-num">165</span>, TextStyle.Default);
+canvas.AddTooltip(<span class="tok-num">72</span>, <span class="tok-num">140</span>, <span class="tok-num">200</span>, <span class="tok-num">40</span>,
+    tooltip: <span class="tok-str">"This text appears on hover."</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="fonts">
+
+  <!-- ── TRUETYPE FONTS ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">TrueType fonts</h2>
+    <p class="docs-p">The five built-in standard fonts (Helvetica, Times-Roman, Courier, Symbol, ZapfDingbats) cover ASCII + Latin-1. For Unicode text, emoji, or CJK, embed a TrueType font.</p>
+
+    <h3 class="docs-h3">Embed by file path</h3>
+    <p class="docs-p">The simplest option: point <code>TextStyle</code> directly at a <code>.ttf</code> or <code>.otf</code> file. The font is read once per document and cached.</p>
+    <pre><span class="tok-kw">var</span> custom = TextStyle.Default
+    .WithFontFile(<span class="tok-str">"/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"</span>)
+    .WithSize(<span class="tok-num">14</span>);
+
+canvas.DrawText(<span class="tok-str">"café résumé naïve"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, custom);
+canvas.DrawText(<span class="tok-str">"Bold variant"</span>,      <span class="tok-num">72</span>, <span class="tok-num">96</span>, custom.WithBold());</pre>
+
+    <h3 class="docs-h3">FontRegistry — named families + fallback chain</h3>
+    <p class="docs-p">Register one or more families under logical names, define the fallback chain (used when the primary font has no glyph), and attach the registry to the document. The canvas then segments text automatically, routing each character to the first font that can render it.</p>
+    <pre><span class="tok-kw">var</span> fonts = <span class="tok-kw">new</span> FontRegistry()
+    <span class="tok-cm">// Register individual variants</span>
+    .AddFamily(<span class="tok-str">"LiberationSans"</span>,
+        regular:    <span class="tok-str">"Fonts/LiberationSans-Regular.ttf"</span>,
+        bold:       <span class="tok-str">"Fonts/LiberationSans-Bold.ttf"</span>,
+        italic:     <span class="tok-str">"Fonts/LiberationSans-Italic.ttf"</span>,
+        boldItalic: <span class="tok-str">"Fonts/LiberationSans-BoldItalic.ttf"</span>)
+    <span class="tok-cm">// Or scan a directory — detects variants from filenames</span>
+    .AddDirectory(<span class="tok-str">"Fonts/"</span>)
+    <span class="tok-cm">// NotoSans fills in any glyph LiberationSans is missing</span>
+    .AddFallback(<span class="tok-str">"NotoSans"</span>);
+
+PdfDocument.Create()
+    .WithFontRegistry(fonts)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        <span class="tok-kw">var</span> style = TextStyle.Default
+            .WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">14</span>);
+
+        canvas.DrawText(<span class="tok-str">"Hello κόσμε мир"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, style);
+        canvas.DrawText(<span class="tok-str">"Bold text"</span>,  <span class="tok-num">72</span>, <span class="tok-num">96</span>, style.WithBold());
+        canvas.DrawText(<span class="tok-str">"Italic text"</span>, <span class="tok-num">72</span>, <span class="tok-num">118</span>, style.WithItalic());
+    })
+    .Save(<span class="tok-str">"output.pdf"</span>);</pre>
+
+    <div class="docs-note">
+      <code>AddDirectory</code> expects filenames in the pattern <code>FamilyName-Regular.ttf</code>, <code>FamilyName-Bold.ttf</code>, etc. Characters that no registered font can render are emitted as <code>.notdef</code> boxes — no exception is thrown.
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="multipage">
+
+  <!-- ── MULTI-PAGE ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Multi-page documents</h2>
+    <p class="docs-p">Call <code>AddPage</code> as many times as needed. Pages are written in the order added.</p>
+
+    <pre><span class="tok-kw">var</span> doc = PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"Report"</span>)
+    .WithAuthor(<span class="tok-str">"Majorsilence"</span>)
+    .WithFontRegistry(fonts);
+
+<span class="tok-kw">string</span>[] chapters = { <span class="tok-str">"Introduction"</span>, <span class="tok-str">"Methods"</span>, <span class="tok-str">"Results"</span> };
+<span class="tok-kw">var</span> title  = TextStyle.Default.WithSize(<span class="tok-num">24</span>).WithBold();
+<span class="tok-kw">var</span> footer = TextStyle.Default.WithSize(<span class="tok-num">9</span>).WithColor(PdfColor.Gray);
+
+<span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">0</span>; i &lt; chapters.Length; i++)
+{
+    <span class="tok-kw">int</span> pageNum = i + <span class="tok-num">1</span>;
+    doc.AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(chapters[i], <span class="tok-num">72</span>, <span class="tok-num">72</span>, title);
+        canvas.DrawText(
+            $<span class="tok-str">"Page {pageNum} of {chapters.Length}"</span>,
+            PageSizes.A4.Width / <span class="tok-num">2</span>, PageSizes.A4.Height - <span class="tok-num">30</span>,
+            footer.WithAlignment(TextAlignment.Center));
+    });
+}
+
+doc.Save(<span class="tok-str">"report.pdf"</span>);</pre>
+
+    <div class="docs-note">
+      <strong>Landscape pages</strong> — call <code>PageSizes.Letter.Landscape()</code> (or any size) to swap width and height. Mix orientations freely across pages in the same document.
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="save">
+
+  <!-- ── SAVE ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Save options</h2>
+
+    <pre><span class="tok-cm">// Write to a file</span>
 doc.Save(<span class="tok-str">"report.pdf"</span>);
 
-<span class="tok-cm">// to a stream — e.g. an HTTP response</span>
-<span class="tok-kw">await</span> doc.SaveAsync(Response.Body);</pre>
+<span class="tok-cm">// Write to any Stream (e.g. an ASP.NET response body)</span>
+doc.Save(Response.Body);
 
-  <p class="docs-p-mt">That's the whole surface for most reports. Need full RDL reports, Excel, HTML and CSV too? Reach for <a href="{{ '/' | relative_url }}" style="color: var(--accent);">Majorsilence Reporting</a>, the larger engine this library powers.</p>
+<span class="tok-cm">// Get bytes — useful for returning from an API endpoint</span>
+<span class="tok-kw">byte</span>[] bytes = doc.ToBytes();
+<span class="tok-kw">return</span> File(bytes, <span class="tok-str">"application/pdf"</span>, <span class="tok-str">"report.pdf"</span>);</pre>
+
+    <div class="docs-note">
+      All three overloads are synchronous. Wrap in <code>Task.Run</code> if you need to call from async code without blocking the thread pool.
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="metadata">
+
+  <!-- ── METADATA & VERSION ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Metadata &amp; PDF version</h2>
+    <p class="docs-p">Metadata appears in the viewer's document properties. The PDF version controls the file header and cross-reference format.</p>
+
+    <pre>PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"Invoice #INV-2026-0042"</span>)
+    .WithAuthor(<span class="tok-str">"Majorsilence Corp"</span>)
+    .WithSubject(<span class="tok-str">"Sales invoice"</span>)
+    .WithCreator(<span class="tok-str">"MyApp 1.0"</span>)
+    <span class="tok-cm">// PDF 1.4 (default) — broadest reader compatibility</span>
+    .WithVersion(PdfVersion.Pdf14)
+    <span class="tok-cm">// PDF 2.0 — adds XMP metadata stream + compressed xref</span>
+    <span class="tok-cm">// .WithVersion(PdfVersion.Pdf20)</span>
+    .AddPage(PageSizes.Letter, canvas => { <span class="tok-cm">/* ... */</span> })
+    .Save(<span class="tok-str">"invoice.pdf"</span>);</pre>
+
+    <table class="api-table">
+      <thead><tr><th>Version</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>PdfVersion.Pdf14</td><td>Default. <code>%PDF-1.4</code> header. Traditional cross-reference table. Supported by virtually every PDF viewer.</td></tr>
+        <tr><td>PdfVersion.Pdf20</td><td>ISO 32000-2. <code>%PDF-2.0</code> header. XMP metadata stream attached to the document catalog. Compressed cross-reference stream instead of a plain xref table.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>

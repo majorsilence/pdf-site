@@ -313,13 +313,23 @@ layout: default
     <div class="pipeline-card-header">
       <span>Program.cs</span><span class="tag">in</span>
     </div>
-    <pre><span class="tok-kw">using var</span> doc = <span class="tok-kw">new</span> <span class="tok-ty">PdfDocument</span>();
-<span class="tok-kw">var</span> page = doc.AddPage(PageSize.<span class="tok-str">A4</span>);
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
 
-page.Text(<span class="tok-str">"Sales Summary — Q2 2026"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, size: <span class="tok-num">22</span>);
-page.Table(rows, <span class="tok-num">72</span>, <span class="tok-num">120</span>);
+<span class="tok-kw">var</span> heading = TextStyle.Default
+    .WithFamily(<span class="tok-str">"Helvetica"</span>).WithSize(<span class="tok-num">22</span>).WithBold();
+<span class="tok-kw">var</span> body = TextStyle.Default.WithSize(<span class="tok-num">11</span>);
 
-doc.Save(<span class="tok-str">"report.pdf"</span>);</pre>
+PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"Sales Summary — Q2 2026"</span>)
+    .AddPage(PageSizes.Letter, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Sales Summary — Q2 2026"</span>,
+            <span class="tok-num">72</span>, <span class="tok-num">72</span>, heading);
+        canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">92</span>, <span class="tok-num">540</span>, <span class="tok-num">92</span>);
+        canvas.DrawText(<span class="tok-str">"North America  12,408  $1.24M"</span>,
+            <span class="tok-num">72</span>, <span class="tok-num">120</span>, body);
+    })
+    .Save(<span class="tok-str">"report.pdf"</span>);</pre>
   </div>
 
   <div class="pipeline-arrow">→</div>
