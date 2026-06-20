@@ -1,0 +1,422 @@
+---
+layout: default
+title: "Why Majorsilence.Pdf?"
+description: "How Majorsilence.Pdf compares to iText, QuestPDF, PdfSharp, and HTML-to-PDF tools — and when to reach for something else."
+---
+
+<style>
+  .why-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .why-back {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+
+  .why-back:hover { text-decoration: underline; }
+
+  .why-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .why-title {
+    font-family: 'Newsreader', serif;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 20px;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+
+  @media (max-width: 600px) {
+    .why-title { font-size: 36px; }
+  }
+
+  .why-lead {
+    font-family: 'Newsreader', serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0 0 36px;
+  }
+
+  hr.why-rule {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 44px 0;
+  }
+
+  .why-h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+
+  .why-h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 28px 0 8px;
+  }
+
+  .why-p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+
+  .why-section {
+    margin-bottom: 0;
+  }
+
+  /* comparison table */
+  .cmp-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 24px;
+  }
+
+  .cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    min-width: 620px;
+  }
+
+  .cmp-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--line);
+    white-space: nowrap;
+  }
+
+  .cmp-table th:first-child {
+    min-width: 160px;
+  }
+
+  .cmp-table td {
+    padding: 11px 14px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .cmp-table td:first-child {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .cmp-table tr:last-child td { border-bottom: none; }
+
+  .cmp-table tr.cmp-highlight td {
+    background: var(--accent-soft);
+  }
+
+  .cmp-table tr.cmp-highlight td:first-child {
+    color: var(--accent);
+  }
+
+  /* pill badges */
+  .pill {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .pill-green  { background: rgba(16,185,129,0.13); color: #059669; }
+  .pill-yellow { background: rgba(245,158,11,0.13); color: #B45309; }
+  .pill-red    { background: rgba(239,68,68,0.12);  color: #DC2626; }
+  .pill-blue   { background: var(--accent-soft);    color: var(--accent); }
+
+  /* use/avoid cards */
+  .use-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 620px) {
+    .use-grid { grid-template-columns: 1fr; }
+  }
+
+  .use-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+
+  .use-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .use-card-title.green { color: #059669; }
+  .use-card-title.yellow { color: #B45309; }
+
+  .use-card ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  .use-card ul li { margin-bottom: 4px; }
+
+  /* alt library entries */
+  .alt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 8px;
+  }
+
+  .alt-entry {
+    border-left: 3px solid var(--line);
+    padding: 4px 0 4px 18px;
+  }
+
+  .alt-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .alt-when {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* note box */
+  .why-note {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+</style>
+
+<div class="why-wrap">
+  <a href="{{ '/' | relative_url }}" class="why-back">← Home</a>
+
+  <div class="why-eyebrow">Honest comparison</div>
+  <h1 class="why-title">Why Majorsilence.Pdf?</h1>
+  <p class="why-lead">There is no shortage of PDF libraries for .NET. Here is a clear-eyed look at where Majorsilence.Pdf fits, where it excels, and when you should reach for something else instead.</p>
+
+  <hr class="why-rule">
+
+  <!-- ── COMPARISON TABLE ── -->
+  <div class="why-section">
+    <h2 class="why-h2">Library comparison</h2>
+    <p class="why-p">The table below covers the most commonly reached-for .NET PDF libraries. All information is based on publicly available documentation as of mid-2026.</p>
+
+    <div class="cmp-table-wrap">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>Library</th>
+            <th>License</th>
+            <th>Dependencies</th>
+            <th>Package size</th>
+            <th>API model</th>
+            <th>.NET support</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cmp-highlight">
+            <td>Majorsilence.Pdf</td>
+            <td><span class="pill pill-green">MIT / Apache / BSD</span></td>
+            <td><span class="pill pill-green">Zero</span></td>
+            <td>~75 KB</td>
+            <td>Canvas / fluent</td>
+            <td>NS2.0, .NET 8 &amp; 10</td>
+          </tr>
+          <tr>
+            <td>iText 7</td>
+            <td><span class="pill pill-yellow">AGPL or commercial</span></td>
+            <td>Several NuGet refs</td>
+            <td>~6 MB</td>
+            <td>Document/element tree</td>
+            <td>.NET Standard 2.0+</td>
+          </tr>
+          <tr>
+            <td>QuestPDF</td>
+            <td><span class="pill pill-yellow">Community / commercial</span></td>
+            <td>SkiaSharp (native)</td>
+            <td>~10 MB (incl. native)</td>
+            <td>Fluent layout engine</td>
+            <td>.NET 6+</td>
+          </tr>
+          <tr>
+            <td>PdfSharp</td>
+            <td><span class="pill pill-green">MIT</span></td>
+            <td>None (for core)</td>
+            <td>~400 KB</td>
+            <td>GDI-style drawing</td>
+            <td>.NET 6+ (v0.1.x NS2.0)</td>
+          </tr>
+          <tr>
+            <td>Syncfusion PDF</td>
+            <td><span class="pill pill-yellow">Commercial / community</span></td>
+            <td>Syncfusion suite</td>
+            <td>~4 MB</td>
+            <td>Document/element tree</td>
+            <td>.NET Standard 2.0+</td>
+          </tr>
+          <tr>
+            <td>Puppeteer / wkhtmltopdf</td>
+            <td><span class="pill pill-green">MIT (Puppeteer)</span></td>
+            <td><span class="pill pill-red">Native binary required</span></td>
+            <td>50–150 MB (browser)</td>
+            <td>HTML → PDF render</td>
+            <td>Any (via CLI/bridge)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="why-p">The "Community" tier of QuestPDF is free for organisations with annual revenue under $1 M USD; above that, a paid license is required. iText 7 requires a commercial license for closed-source software. Syncfusion has a free community licence for individual developers and small teams.</p>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── WHEN TO USE ── -->
+  <div class="why-section">
+    <h2 class="why-h2">When to choose Majorsilence.Pdf</h2>
+
+    <div class="use-grid">
+      <div class="use-card">
+        <div class="use-card-title green">Good fit</div>
+        <ul>
+          <li>Zero runtime dependencies is a hard requirement — containers, AWS Lambda, AOT compilation, or strict security audits</li>
+          <li>You need MIT, Apache-2.0, or BSD-3-Clause licensing with no AGPL complications</li>
+          <li>You want a small, auditable codebase with no native binaries to manage</li>
+          <li>Your mental model is canvas-coordinate drawing — place text at (x, y), draw lines, embed images</li>
+          <li>You're building invoices, reports, certificates, receipts, or data exports where you control the layout</li>
+          <li>Trim-friendliness or AOT compilation matters (serverless cold starts, embedded .NET)</li>
+          <li>You want to ship to Windows, Linux, and macOS without worrying about native font rendering libraries</li>
+        </ul>
+      </div>
+      <div class="use-card">
+        <div class="use-card-title yellow">Less ideal fit</div>
+        <ul>
+          <li>You need to read, edit, or merge complex existing PDFs with annotations, AcroForms, or XFA</li>
+          <li>PDF/A or PDF/UA compliance certification is required by a regulatory body</li>
+          <li>You prefer a flow-based layout model (paragraphs that wrap automatically, tables that paginate) over explicit coordinates</li>
+          <li>You need production-grade Arabic shaping or complex BiDi text rendering</li>
+          <li>Your content already lives in HTML/CSS templates and pixel-perfect browser rendering is essential</li>
+          <li>You need advanced timestamped digital signatures (PKCS#12 with TSA) or long-term validation (PAdES LTV)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── ALTERNATIVES ── -->
+  <div class="why-section">
+    <h2 class="why-h2">When to reach for something else</h2>
+    <p class="why-p">These are honest recommendations. Pick the right tool for your constraints.</p>
+
+    <div class="alt-list">
+      <div class="alt-entry">
+        <div class="alt-name">iText 7</div>
+        <div class="alt-when">If you need the most complete PDF feature set available in .NET — AcroForm manipulation, PAdES/LTV digital signatures, PDF/A and PDF/UA creation, redaction, or reading and modifying complex existing PDFs — and you can use the AGPL license or purchase a commercial one.</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">QuestPDF</div>
+        <div class="alt-when">If you prefer thinking in terms of rows, columns, and flowing content (a layout engine rather than a drawing canvas), and your revenue is below the community tier threshold. QuestPDF's fluent document model is excellent for rich, content-heavy documents where automatic pagination matters more than pixel-precise placement.</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">PdfSharp</div>
+        <div class="alt-when">If you want another zero-dependency MIT library with a GDI-style drawing API and are targeting .NET 6+. PdfSharp is a solid alternative with a larger community and longer history. The two libraries have similar strengths; evaluate the API style to see which fits your team better.</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">Puppeteer / Playwright / wkhtmltopdf</div>
+        <div class="alt-when">If your document content is already authored as HTML + CSS — e.g. a templated invoice rendered by a Razor view — and you need pixel-perfect browser-engine rendering (web fonts, CSS grid, background images). The trade-off is a large native binary dependency and slower generation times.</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">Syncfusion / DevExpress / Telerik</div>
+        <div class="alt-when">If you are already licensed for one of these component suites and want a single vendor for all your UI and document-generation needs. The PDF libraries bundled in these suites are full-featured and well-supported within their ecosystems.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── DESIGN PHILOSOPHY ── -->
+  <div class="why-section">
+    <h2 class="why-h2">Design philosophy</h2>
+    <p class="why-p">Most PDF libraries grew up when .NET meant Windows, NuGet was young, and "zero dependencies" was not a design goal. They accumulated features, native code, and license complexity over time.</p>
+    <p class="why-p">Majorsilence.Pdf starts from different constraints:</p>
+
+    <h3 class="why-h3">Make the boring simple.</h3>
+    <p class="why-p">Generating a PDF — an invoice, a certificate, a data export — should take a handful of lines, not a page of boilerplate. The library surface is intentionally small: a document, pages, a canvas. You place things. You save. Done.</p>
+
+    <h3 class="why-h3">Zero should mean zero.</h3>
+    <p class="why-p">Not "zero at runtime if you install the platform pack" or "zero unless you use fonts." One <code>dotnet add package</code> and nothing else. No transitive tree to audit, no native binaries to include in your container image, no AGPL risk to review with legal.</p>
+
+    <h3 class="why-h3">Pure managed code.</h3>
+    <p class="why-p">The whole library is IL. It trims cleanly, compiles ahead-of-time, and runs the same on Windows, Linux, macOS, ARM, and x64 — without conditional native asset selection or runtime feature detection.</p>
+
+    <div class="why-note">
+      <strong>Tri-licensed.</strong> Pick whichever of MIT, Apache-2.0, or BSD-3-Clause suits your project. There is no AGPL tier, no community-vs-commercial split, and no revenue threshold that changes your obligations.
+    </div>
+  </div>
+
+</div>

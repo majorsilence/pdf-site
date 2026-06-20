@@ -213,6 +213,10 @@ description: "Get started with Majorsilence.Pdf — your first PDF in two minute
       <li><a href="#multipage">Multi-page documents</a></li>
       <li><a href="#save">Save options</a></li>
       <li><a href="#metadata">Metadata &amp; version</a></li>
+      <li><a href="#rtl">Right-to-left text</a></li>
+      <li><a href="#security">Password protection</a></li>
+      <li><a href="#signing">Digital signatures</a></li>
+      <li><a href="#merge">PDF merge</a></li>
     </ol>
   </div>
 
@@ -333,6 +337,7 @@ canvas.DrawText(<span class="tok-str">"overline"</span>,       <span class="tok-
         <tr><td>.WithStrikethrough()</td><td>Strikethrough decoration.</td></tr>
         <tr><td>.WithOverline()</td><td>Overline decoration.</td></tr>
         <tr><td>.WithVertical()</td><td>Rotate text 90° counter-clockwise.</td></tr>
+        <tr><td>.WithRightToLeft()</td><td>Reverse code-point order for visual RTL rendering (Hebrew, Arabic). Use together with <code>TextAlignment.Right</code> so X is the right anchor.</td></tr>
       </tbody>
     </table>
 
@@ -346,7 +351,10 @@ PdfColor.Orange   PdfColor.Gray     PdfColor.LightGray   PdfColor.DarkGray
 PdfColor.FromHex(<span class="tok-str">"#1A56A0"</span>)
 
 <span class="tok-cm">// From RGB bytes (0–255)</span>
-PdfColor.FromRgb(<span class="tok-num">26</span>, <span class="tok-num">86</span>, <span class="tok-num">160</span>)</pre>
+PdfColor.FromRgb(<span class="tok-num">26</span>, <span class="tok-num">86</span>, <span class="tok-num">160</span>)
+
+<span class="tok-cm">// Constructor form — same as FromRgb</span>
+<span class="tok-kw">new</span> PdfColor(<span class="tok-num">26</span>, <span class="tok-num">86</span>, <span class="tok-num">160</span>)</pre>
 
     <h3 class="docs-h3">Measuring text width</h3>
     <p class="docs-p">Use <code>MeasureTextWidth</code> to position labels relative to other content:</p>
@@ -523,7 +531,7 @@ PdfDocument.Create()
     .Save(<span class="tok-str">"output.pdf"</span>);</pre>
 
     <div class="docs-note">
-      <code>AddDirectory</code> expects filenames in the pattern <code>FamilyName-Regular.ttf</code>, <code>FamilyName-Bold.ttf</code>, etc. Characters that no registered font can render are emitted as <code>.notdef</code> boxes — no exception is thrown.
+      <code>AddDirectory</code> expects filenames in the pattern <code>FamilyName-Regular.ttf</code>, <code>FamilyName-Bold.ttf</code>, etc. Characters that no registered font can render are emitted as <code>.notdef</code> boxes — no exception is thrown. Use <code>registry.Contains("FamilyName")</code> to check whether a family was successfully loaded before using it.
     </div>
   </div>
 
@@ -610,6 +618,201 @@ doc.Save(Response.Body);
         <tr><td>PdfVersion.Pdf20</td><td>ISO 32000-2. <code>%PDF-2.0</code> header. XMP metadata stream attached to the document catalog. Compressed cross-reference stream instead of a plain xref table.</td></tr>
       </tbody>
     </table>
+  </div>
+
+  <hr class="docs-rule" id="rtl">
+
+  <!-- ── RIGHT-TO-LEFT ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Right-to-left text</h2>
+    <p class="docs-p">Call <code>.WithRightToLeft()</code> on a <code>TextStyle</code> to reverse code-point order for visual RTL rendering. Pair it with <code>TextAlignment.Right</code> so the X coordinate is the right anchor. Hebrew renders correctly without a shaping engine; Arabic shows visual reversal (correct ligatures require an external shaper like HarfBuzz).</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+
+<span class="tok-cm">// Build a registry with Hebrew and Arabic script fonts</span>
+<span class="tok-kw">var</span> reg = <span class="tok-kw">new</span> FontRegistry()
+    .AddDirectory(<span class="tok-str">"Fonts/"</span>)          <span class="tok-cm">// picks up NotoSansHebrew, NotoSansArabic, etc.</span>
+    .AddFallback(<span class="tok-str">"NotoSans"</span>)
+    .AddFallback(<span class="tok-str">"NotoSansHebrew"</span>)
+    .AddFallback(<span class="tok-str">"NotoSansArabic"</span>);
+
+<span class="tok-cm">// Check whether the optional script font actually loaded</span>
+<span class="tok-kw">string</span> hebrewFamily = reg.Contains(<span class="tok-str">"NotoSansHebrew"</span>) ? <span class="tok-str">"NotoSansHebrew"</span> : <span class="tok-str">"NotoSans"</span>;
+
+<span class="tok-kw">float</span> pageW      = PageSizes.A4.Width;
+<span class="tok-kw">float</span> rightEdge  = pageW - <span class="tok-num">72</span>;  <span class="tok-cm">// right margin anchor</span>
+
+<span class="tok-kw">var</span> rtl = TextStyle.Default
+    .WithFamily(hebrewFamily)
+    .WithSize(<span class="tok-num">16</span>)
+    .WithRightToLeft()
+    .WithAlignment(TextAlignment.Right);
+
+PdfDocument.Create()
+    .WithFontRegistry(reg)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"שלום עולם"</span>, rightEdge, <span class="tok-num">72</span>, rtl.WithSize(<span class="tok-num">24</span>).WithBold());
+        canvas.DrawText(<span class="tok-str">"ספר, ישראל, שלום, אהבה"</span>, rightEdge, <span class="tok-num">110</span>, rtl);
+
+        <span class="tok-cm">// Mix LTR and RTL on the same line</span>
+        <span class="tok-kw">var</span> ltr = TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">14</span>);
+        canvas.DrawText(<span class="tok-str">"Hello, World!"</span>, <span class="tok-num">72</span>, <span class="tok-num">160</span>, ltr);
+        canvas.DrawText(<span class="tok-str">"!שלום, עולם"</span>, rightEdge, <span class="tok-num">160</span>, rtl.WithSize(<span class="tok-num">14</span>));
+    })
+    .Save(<span class="tok-str">"rtl.pdf"</span>);</pre>
+
+    <div class="docs-note">
+      <code>NotoSansHebrew</code> and <code>NotoSansArabic</code> are included in the bundled <code>Majorsilence.Drawing.Common</code> fonts and are picked up automatically by <code>AddDirectory</code>. Characters that no registered font can render appear as <code>.notdef</code> boxes.
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="security">
+
+  <!-- ── PASSWORD PROTECTION ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Password protection</h2>
+    <p class="docs-p">Encrypt a document so that readers must supply a password to open it. You can also restrict what the reader is allowed to do with the document (print, copy text, etc.).</p>
+    <p class="docs-p">The encryption uses the Standard Security Handler Rev 4, AES-128-CBC — the algorithm defined in PDF 1.5–1.7 and supported by every major viewer.</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+<span class="tok-kw">using</span> Majorsilence.Pdf.Security;
+
+<span class="tok-kw">var</span> security = PdfSecurity
+    .Protect(userPassword: <span class="tok-str">"open123"</span>, ownerPassword: <span class="tok-str">"owner456"</span>)
+    .WithPermissions(PdfPermissions.Print | PdfPermissions.CopyText);
+
+PdfDocument.Create()
+    .WithSecurity(security)
+    .WithTitle(<span class="tok-str">"Confidential Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Confidential document"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    })
+    .Save(<span class="tok-str">"protected.pdf"</span>);</pre>
+
+    <h3 class="docs-h3">PdfSecurity &amp; PdfPermissions reference</h3>
+    <table class="api-table">
+      <thead><tr><th>Member</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>PdfSecurity.Protect(user, owner)</td><td>Create a security descriptor. <code>user</code> is the password needed to open the file; <code>owner</code> unlocks all restrictions.</td></tr>
+        <tr><td>.WithPermissions(flags)</td><td>Bitfield of <code>PdfPermissions</code> flags to grant. Default: no permissions (read-only).</td></tr>
+        <tr><td>PdfPermissions.Print</td><td>Allow printing.</td></tr>
+        <tr><td>PdfPermissions.CopyText</td><td>Allow text selection and copying.</td></tr>
+        <tr><td>doc.WithSecurity(security)</td><td>Attach the security descriptor to the document before saving.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="signing">
+
+  <!-- ── DIGITAL SIGNATURES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Digital signatures</h2>
+    <p class="docs-p">Embed a PKCS#7 detached digital signature (<code>adbe.pkcs7.detached</code>, SHA-256) using an <code>X509Certificate2</code> that holds a private key. In production, load the certificate from <code>X509Store</code> or a <code>.pfx</code> file issued by a trusted CA.</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+<span class="tok-kw">using</span> Majorsilence.Pdf.Security;
+<span class="tok-kw">using</span> System.Security.Cryptography.X509Certificates;
+
+<span class="tok-cm">// Load a certificate with a private key (from file, store, HSM, etc.)</span>
+X509Certificate2 cert = X509CertificateLoader.LoadPkcs12(
+    File.ReadAllBytes(<span class="tok-str">"signer.pfx"</span>), password: <span class="tok-str">"pfxpassword"</span>,
+    X509KeyStorageFlags.Exportable);
+
+<span class="tok-kw">var</span> sigOpts = <span class="tok-kw">new</span> PdfSignatureOptions(cert)
+    .WithReason(<span class="tok-str">"Document approval"</span>)
+    .WithSignerName(<span class="tok-str">"Jane Smith"</span>)
+    .WithLocation(<span class="tok-str">"Toronto, ON"</span>);
+
+PdfDocument.Create()
+    .WithSignature(sigOpts)
+    .WithTitle(<span class="tok-str">"Signed Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Digitally signed document"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    })
+    .Save(<span class="tok-str">"signed.pdf"</span>);</pre>
+
+    <h3 class="docs-h3">PdfSignatureOptions reference</h3>
+    <table class="api-table">
+      <thead><tr><th>Member</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>new PdfSignatureOptions(cert)</td><td>Create signature options from an <code>X509Certificate2</code> with an exportable private key.</td></tr>
+        <tr><td>.WithReason(text)</td><td>Signing reason written into the signature dictionary (appears in viewer's signature panel).</td></tr>
+        <tr><td>.WithSignerName(name)</td><td>Human-readable signer name.</td></tr>
+        <tr><td>.WithLocation(location)</td><td>Physical or logical location of signing.</td></tr>
+        <tr><td>doc.WithSignature(opts)</td><td>Attach the signature options to the document. The signature is computed and embedded at save time.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="docs-note">
+      The signature uses SHA-256 and AES-128 (Rev 4), which is broadly supported. Open the output in Adobe Acrobat or a compatible viewer to verify the signature panel. A self-signed certificate will show as untrusted unless added to the viewer's trust store.
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="merge">
+
+  <!-- ── PDF MERGE ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">PDF merge</h2>
+    <p class="docs-p"><code>PdfMerger</code> concatenates any number of independently-produced PDF byte arrays into a single document. Each source PDF can have different page sizes, orientations, and embedded fonts — they are all preserved in the output.</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+
+<span class="tok-cm">// Produce two source documents as byte arrays</span>
+<span class="tok-kw">byte</span>[] coverPage = PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"Quarterly Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawRectangle(<span class="tok-num">0</span>, <span class="tok-num">0</span>, PageSizes.A4.Width, PageSizes.A4.Height,
+            ShapeStyle.Filled(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">30</span>, <span class="tok-num">80</span>, <span class="tok-num">160</span>)));
+        canvas.DrawText(<span class="tok-str">"Quarterly Report — Q2 2026"</span>, <span class="tok-num">72</span>, <span class="tok-num">280</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">36</span>).WithBold().WithColor(PdfColor.White));
+    })
+    .ToBytes();
+
+<span class="tok-kw">byte</span>[] contentPages = PdfDocument.Create()
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Financial Summary"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">22</span>).WithBold());
+        canvas.DrawText(<span class="tok-str">"Net Income: $1,500,000"</span>, <span class="tok-num">72</span>, <span class="tok-num">120</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">12</span>));
+    })
+    .ToBytes();
+
+<span class="tok-cm">// Merge into a single document</span>
+<span class="tok-kw">byte</span>[] merged = <span class="tok-kw">new</span> PdfMerger()
+    .Add(coverPage)
+    .Add(contentPages)
+    .WithTitle(<span class="tok-str">"Quarterly Report Q2 2026"</span>)
+    .WithAuthor(<span class="tok-str">"Example Corp"</span>)
+    .WithSubject(<span class="tok-str">"Financial Summary"</span>)
+    .WithCreator(<span class="tok-str">"MyApp 2.0"</span>)
+    .Merge();
+
+File.WriteAllBytes(<span class="tok-str">"merged.pdf"</span>, merged);</pre>
+
+    <h3 class="docs-h3">PdfMerger reference</h3>
+    <table class="api-table">
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>new PdfMerger()</td><td>Create a new merger. No arguments required.</td></tr>
+        <tr><td>.Add(pdfBytes)</td><td>Append the pages of a PDF (as a <code>byte[]</code>) to the merge queue. Call as many times as needed; pages are output in order.</td></tr>
+        <tr><td>.WithTitle(text)</td><td>Title for the merged document's metadata.</td></tr>
+        <tr><td>.WithAuthor(text)</td><td>Author for the merged document's metadata.</td></tr>
+        <tr><td>.WithSubject(text)</td><td>Subject for the merged document's metadata.</td></tr>
+        <tr><td>.WithCreator(text)</td><td>Creator application string for the merged document's metadata.</td></tr>
+        <tr><td>.Merge()</td><td>Execute the merge and return the combined PDF as a <code>byte[]</code>. The output is always PDF 1.4.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="docs-note">
+      <code>PdfMerger</code> output is always PDF 1.4 regardless of the version of the source documents.
+    </div>
   </div>
 
 </div>

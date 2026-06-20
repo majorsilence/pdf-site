@@ -30,6 +30,16 @@ layout: default
 
   .hero-title span { color: var(--accent); }
 
+  .hero-tagline {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(18px, 2.4vw, 24px);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin: 18px 0 0;
+    letter-spacing: 0.01em;
+  }
+
   .hero-body {
     font-size: 17px;
     line-height: 1.6;
@@ -299,6 +309,7 @@ layout: default
 <div class="hero">
   <div class="hero-eyebrow">part of Majorsilence Reporting</div>
   <h1 class="hero-title">PDF for .NET.<br><span>Tiny by design.</span></h1>
+  <p class="hero-tagline">Make the boring simple.</p>
   <p class="hero-body">A modern, self-contained PDF library for .NET 8 &amp; 10. Zero dependencies, no native binaries — one small managed package. Tri-licensed&nbsp;MIT, Apache-2.0, or BSD-3-Clause.  Your choice.</p>
   <div class="hero-cta">
     <a href="{{ '/docs/' | relative_url }}" class="btn-primary">Get started</a>
