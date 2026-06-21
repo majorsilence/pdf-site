@@ -205,17 +205,22 @@ description: "Get started with Majorsilence.Pdf — your first PDF in two minute
       <li><a href="#hello">Hello, PDF</a></li>
       <li><a href="#styles">API styles</a></li>
       <li><a href="#text">Text &amp; TextStyle</a></li>
+      <li><a href="#textwrap">Text wrapping</a></li>
       <li><a href="#shapes">Shapes</a></li>
+      <li><a href="#opacity">Opacity</a></li>
       <li><a href="#lines">Lines &amp; curves</a></li>
       <li><a href="#images">Images</a></li>
+      <li><a href="#tables">Tables</a></li>
       <li><a href="#annotations">Links &amp; tooltips</a></li>
       <li><a href="#fonts">TrueType fonts</a></li>
       <li><a href="#multipage">Multi-page documents</a></li>
       <li><a href="#save">Save options</a></li>
       <li><a href="#metadata">Metadata &amp; version</a></li>
+      <li><a href="#pdfa">PDF/A conformance</a></li>
       <li><a href="#rtl">Right-to-left text</a></li>
       <li><a href="#security">Password protection</a></li>
       <li><a href="#signing">Digital signatures</a></li>
+      <li><a href="#pubkey">Public-key encryption</a></li>
       <li><a href="#merge">PDF merge</a></li>
     </ol>
   </div>
@@ -362,6 +367,50 @@ PdfColor.FromRgb(<span class="tok-num">26</span>, <span class="tok-num">86</span
 canvas.DrawText(<span class="tok-str">"World"</span>, <span class="tok-num">72</span> + w + <span class="tok-num">4</span>, <span class="tok-num">72</span>, body);</pre>
   </div>
 
+  <hr class="docs-rule" id="textwrap">
+
+  <!-- ── TEXT WRAPPING ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Multi-line text wrapping</h2>
+    <p class="docs-p"><code>DrawTextBox</code> word-wraps text into a bounding box. Hard newlines (<code>\n</code>) force a line break; words are never split mid-word. The method returns the index into the string where text overflowed the box, so you can continue the paragraph in a second box or on the next page.</p>
+
+    <pre><span class="tok-kw">var</span> body = TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">11</span>);
+
+<span class="tok-kw">string</span> text = <span class="tok-str">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "</span> +
+              <span class="tok-str">"Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n"</span> +
+              <span class="tok-str">"Second paragraph starts here."</span>;
+
+<span class="tok-cm">// Render into a 400 × 120 pt box; returns index of first character that did not fit</span>
+<span class="tok-kw">int</span> overflow = canvas.DrawTextBox(text, x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>,
+    width: <span class="tok-num">400</span>, height: <span class="tok-num">120</span>, body);
+
+<span class="tok-kw">if</span> (overflow &lt; text.Length)
+{
+    <span class="tok-cm">// Continue overflowed text in a second box below</span>
+    canvas.DrawTextBox(text.Substring(overflow), x: <span class="tok-num">72</span>, y: <span class="tok-num">210</span>,
+        width: <span class="tok-num">400</span>, height: <span class="tok-num">120</span>, body);
+}
+
+<span class="tok-cm">// Centre- and right-aligned boxes</span>
+canvas.DrawTextBox(<span class="tok-str">"Centred text\nSecond line"</span>, <span class="tok-num">72</span>, <span class="tok-num">350</span>, <span class="tok-num">300</span>, <span class="tok-num">80</span>,
+    body.WithAlignment(TextAlignment.Center));
+
+canvas.DrawTextBox(<span class="tok-str">"Right-aligned\nAll lines snap right"</span>, <span class="tok-num">72</span>, <span class="tok-num">450</span>, <span class="tok-num">300</span>, <span class="tok-num">80</span>,
+    body.WithAlignment(TextAlignment.Right));</pre>
+
+    <h3 class="docs-h3">DrawTextBox reference</h3>
+    <table class="api-table">
+      <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>text</td><td>The string to render. <code>\n</code> forces a line break at that position.</td></tr>
+        <tr><td>x, y</td><td>Top-left corner of the bounding box in PDF points.</td></tr>
+        <tr><td>width, height</td><td>Box dimensions. Text that would extend below <code>y + height</code> is omitted.</td></tr>
+        <tr><td>style</td><td><code>TextStyle</code> — font, size, colour, and alignment are all respected. <code>TextAlignment</code> is relative to the box width.</td></tr>
+        <tr><td>returns int</td><td>Index of the first character that did not fit. Equal to <code>text.Length</code> if all text fitted.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
   <hr class="docs-rule" id="shapes">
 
   <!-- ── SHAPES ── -->
@@ -408,6 +457,46 @@ canvas.DrawPolygon(triangle,
         <tr><td>.WithNoStroke()</td><td>Remove stroke.</td></tr>
         <tr><td>.Dashed()</td><td>Dashed line style for the stroke.</td></tr>
         <tr><td>.Dotted()</td><td>Dotted line style for the stroke.</td></tr>
+        <tr><td>.WithFillOpacity(alpha)</td><td>Fill transparency. <code>1.0</code> = opaque (default); <code>0.0</code> = fully transparent. See <a href="#opacity">Opacity</a>.</td></tr>
+        <tr><td>.WithStrokeOpacity(alpha)</td><td>Stroke transparency. Same scale as <code>WithFillOpacity</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="opacity">
+
+  <!-- ── OPACITY ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Opacity &amp; transparency</h2>
+    <p class="docs-p">Set fill and stroke transparency independently on shapes, or set overall line opacity via <code>StrokeStyle</code>. All opacity values range from <code>0.0</code> (fully transparent) to <code>1.0</code> (fully opaque, the default).</p>
+
+    <pre><span class="tok-cm">// Fill opacity ramp — five blue squares from opaque to 20 % opacity</span>
+<span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">0</span>; i &lt; <span class="tok-num">5</span>; i++)
+    canvas.DrawRectangle(<span class="tok-num">72</span> + i * <span class="tok-num">50</span>, <span class="tok-num">100</span>, <span class="tok-num">40</span>, <span class="tok-num">40</span>,
+        ShapeStyle.Filled(PdfColor.Blue).WithFillOpacity(<span class="tok-num">1</span>f - i * <span class="tok-num">0</span>.2f));
+
+<span class="tok-cm">// Stroke opacity</span>
+canvas.DrawRectangle(<span class="tok-num">72</span>, <span class="tok-num">170</span>, <span class="tok-num">200</span>, <span class="tok-num">40</span>,
+    ShapeStyle.Stroked(PdfColor.Red, <span class="tok-num">3</span>f).WithStrokeOpacity(<span class="tok-num">0</span>.4f));
+
+<span class="tok-cm">// Overlapping semi-transparent shapes — backgrounds show through</span>
+canvas.DrawRectangle(<span class="tok-num">80</span>, <span class="tok-num">240</span>, <span class="tok-num">150</span>, <span class="tok-num">100</span>, ShapeStyle.Filled(PdfColor.Red));
+canvas.DrawRectangle(<span class="tok-num">155</span>, <span class="tok-num">265</span>, <span class="tok-num">150</span>, <span class="tok-num">100</span>,
+    ShapeStyle.Filled(PdfColor.Blue).WithFillOpacity(<span class="tok-num">0</span>.5f));
+canvas.DrawEllipse(<span class="tok-num">115</span>, <span class="tok-num">300</span>, <span class="tok-num">150</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Filled(PdfColor.Green).WithFillOpacity(<span class="tok-num">0</span>.4f));
+
+<span class="tok-cm">// Line opacity via StrokeStyle</span>
+canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">400</span>, <span class="tok-num">450</span>, <span class="tok-num">400</span>,
+    StrokeStyle.Default.WithWidth(<span class="tok-num">4</span>).WithColor(PdfColor.DarkGray).WithOpacity(<span class="tok-num">0</span>.5f));</pre>
+
+    <h3 class="docs-h3">Opacity API summary</h3>
+    <table class="api-table">
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>ShapeStyle.WithFillOpacity(alpha)</td><td>Fill transparency for rectangles, ellipses, and polygons.</td></tr>
+        <tr><td>ShapeStyle.WithStrokeOpacity(alpha)</td><td>Stroke transparency for the same shape types.</td></tr>
+        <tr><td>StrokeStyle.WithOpacity(alpha)</td><td>Opacity for lines drawn with <code>DrawLine</code> and <code>DrawCurve</code>.</td></tr>
       </tbody>
     </table>
   </div>
@@ -463,6 +552,67 @@ canvas.DrawImage(jpeg, pixelWidth: <span class="tok-num">400</span>, pixelHeight
     }
 canvas.DrawImage(rgb, W, H, isJpeg: <span class="tok-kw">false</span>,
     x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, width: <span class="tok-num">200</span>, height: <span class="tok-num">150</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="tables">
+
+  <!-- ── TABLES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Tables</h2>
+    <p class="docs-p"><code>PdfTable</code> lays out a grid with a header row, optional alternating-row background, automatic cell text wrapping, and configurable borders. Pass it to <code>canvas.DrawTable()</code> to render it at a given position.</p>
+
+    <pre><span class="tok-cm">// Column widths in PDF points</span>
+<span class="tok-kw">var</span> table = <span class="tok-kw">new</span> PdfTable(<span class="tok-kw">new float</span>[] { <span class="tok-num">180</span>, <span class="tok-num">80</span>, <span class="tok-num">90</span>, <span class="tok-num">90</span> })
+    .WithHeaderBackground(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">26</span>, <span class="tok-num">86</span>, <span class="tok-num">160</span>))
+    .WithAlternateRowBackground(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">240</span>, <span class="tok-num">245</span>, <span class="tok-num">252</span>))
+    .WithBorder(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">200</span>, <span class="tok-num">200</span>, <span class="tok-num">200</span>), <span class="tok-num">0</span>.5f)
+    .WithCellPadding(<span class="tok-num">5</span>f)
+    .WithCellTextStyle(TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">10</span>))
+    .WithHeaderTextStyle(
+        TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">10</span>)
+                         .WithBold().WithColor(PdfColor.White));
+
+<span class="tok-cm">// First AddRow call becomes the header row</span>
+table.AddRow(<span class="tok-str">"Product"</span>,         <span class="tok-str">"Qty"</span>, <span class="tok-str">"Unit Price"</span>, <span class="tok-str">"Total"</span>);
+table.AddRow(<span class="tok-str">"PDF Library Pro"</span>,  <span class="tok-str">"3"</span>,   <span class="tok-str">"$400.00"</span>,    <span class="tok-str">"$1 200.00"</span>);
+table.AddRow(<span class="tok-str">"Report Designer"</span>,  <span class="tok-str">"1"</span>,   <span class="tok-str">"$250.00"</span>,    <span class="tok-str">"$250.00"</span>);
+table.AddRow(<span class="tok-str">"Support (12 mo.)"</span>, <span class="tok-str">"1"</span>,   <span class="tok-str">"$500.00"</span>,    <span class="tok-str">"$500.00"</span>);
+
+<span class="tok-cm">// tableBottom receives the Y coordinate just below the last rendered row</span>
+canvas.DrawTable(table, x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, <span class="tok-kw">out float</span> tableBottom);
+
+<span class="tok-cm">// Border-less "report" style</span>
+<span class="tok-kw">var</span> report = <span class="tok-kw">new</span> PdfTable(<span class="tok-kw">new float</span>[] { <span class="tok-num">200</span>, <span class="tok-num">100</span>, <span class="tok-num">100</span> })
+    .WithNoBorder()
+    .WithHeaderBackground(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">245</span>, <span class="tok-num">245</span>, <span class="tok-num">245</span>))
+    .WithCellPadding(<span class="tok-num">4</span>f)
+    .WithCellTextStyle(TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">10</span>))
+    .WithHeaderTextStyle(
+        TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">10</span>).WithBold());
+
+report.AddRow(<span class="tok-str">"Category"</span>,      <span class="tok-str">"Revenue"</span>, <span class="tok-str">"Growth"</span>);
+report.AddRow(<span class="tok-str">"North America"</span>,  <span class="tok-str">"$1.24M"</span>,  <span class="tok-str">"+12%"</span>);
+report.AddRow(<span class="tok-str">"Europe"</span>,         <span class="tok-str">"$0.89M"</span>,  <span class="tok-str">"+8%"</span>);
+
+canvas.DrawTable(report, <span class="tok-num">72</span>, <span class="tok-num">72</span> + tableBottom + <span class="tok-num">20</span>);</pre>
+
+    <h3 class="docs-h3">PdfTable reference</h3>
+    <table class="api-table">
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>new PdfTable(widths)</td><td>Column widths in PDF points. The number of elements sets the column count.</td></tr>
+        <tr><td>.WithHeaderBackground(color)</td><td>Background fill for the first (header) row.</td></tr>
+        <tr><td>.WithAlternateRowBackground(color)</td><td>Background fill for every even data row.</td></tr>
+        <tr><td>.WithBorder(color, width)</td><td>Grid line colour and width.</td></tr>
+        <tr><td>.WithNoBorder()</td><td>Suppress all grid lines.</td></tr>
+        <tr><td>.WithCellPadding(pts)</td><td>Inner padding (all sides) applied to each cell.</td></tr>
+        <tr><td>.WithCellTextStyle(style)</td><td>Default <code>TextStyle</code> for data cells.</td></tr>
+        <tr><td>.WithHeaderTextStyle(style)</td><td><code>TextStyle</code> for the header row.</td></tr>
+        <tr><td>.AddRow(col1, col2, …)</td><td>Add a row. Pass one string per column. The first call produces the header row; subsequent calls produce data rows. Long cell text wraps automatically.</td></tr>
+        <tr><td>canvas.DrawTable(table, x, y)</td><td>Render the table at the given position.</td></tr>
+        <tr><td>canvas.DrawTable(table, x, y, out float bottom)</td><td>Same, but also returns the Y coordinate just below the last row — useful for placing content below the table.</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <hr class="docs-rule" id="annotations">
@@ -620,6 +770,43 @@ doc.Save(Response.Body);
     </table>
   </div>
 
+  <hr class="docs-rule" id="pdfa">
+
+  <!-- ── PDF/A ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">PDF/A conformance</h2>
+    <p class="docs-p"><code>WithConformance</code> marks a document as PDF/A — an ISO subset of PDF designed for long-term archival. The library automatically inserts the required XMP metadata stream and an embedded sRGB ICC output intent. All fonts must be embedded via <code>FontRegistry</code>; standard Type 1 fonts, encryption, and transparency (for level A-1b) are not permitted.</p>
+
+    <pre><span class="tok-kw">var</span> fonts = <span class="tok-kw">new</span> FontRegistry().AddDirectory(<span class="tok-str">"Fonts/"</span>).AddFallback(<span class="tok-str">"NotoSans"</span>);
+
+PdfDocument.Create()
+    .WithConformance(PdfConformance.PdfA2b)   <span class="tok-cm">// sets PDF 1.7 header automatically</span>
+    .WithFontRegistry(fonts)                   <span class="tok-cm">// embedded fonts are required</span>
+    .WithTitle(<span class="tok-str">"Archived Document"</span>)
+    .WithAuthor(<span class="tok-str">"Majorsilence"</span>)
+    .WithSubject(<span class="tok-str">"Archival demonstration"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Archival content"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">14</span>));
+    })
+    .Save(<span class="tok-str">"archive.pdf"</span>);</pre>
+
+    <h3 class="docs-h3">PdfConformance levels</h3>
+    <table class="api-table">
+      <thead><tr><th>Level</th><th>Based on</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>PdfConformance.PdfA1b</td><td>PDF 1.4</td><td>Maximum reader compatibility. No transparency. Widely used for archival.</td></tr>
+        <tr><td>PdfConformance.PdfA2b</td><td>PDF 1.7</td><td>Allows transparency. Recommended for new archives.</td></tr>
+        <tr><td>PdfConformance.PdfA3b</td><td>PDF 1.7</td><td>Same as PDF/A-2b plus supports embedded file attachments.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="docs-note">
+      <strong>Level B</strong> (visual reproducibility) requires embedded fonts, XMP metadata, and an ICC output intent — all inserted automatically by <code>WithConformance</code>. Use a PDF/A validator such as veraPDF to confirm full conformance of your output. PDF/A cannot be combined with password protection or public-key encryption.
+    </div>
+  </div>
+
   <hr class="docs-rule" id="rtl">
 
   <!-- ── RIGHT-TO-LEFT ── -->
@@ -750,6 +937,64 @@ PdfDocument.Create()
 
     <div class="docs-note">
       The signature uses SHA-256 and AES-128 (Rev 4), which is broadly supported. Open the output in Adobe Acrobat or a compatible viewer to verify the signature panel. A self-signed certificate will show as untrusted unless added to the viewer's trust store.
+    </div>
+
+    <h3 class="docs-h3">Visible signature appearance</h3>
+    <p class="docs-p">Call <code>.WithAppearance()</code> to render a visible signature box on the page — useful for documents that require a visible "signed here" field. The box shows a border, "Digitally Signed", and the signer name. Without it the signature is cryptographically present but invisible.</p>
+    <pre><span class="tok-kw">var</span> sigOpts = <span class="tok-kw">new</span> PdfSignatureOptions(cert)
+    .WithReason(<span class="tok-str">"Document approved"</span>)
+    .WithSignerName(<span class="tok-str">"Jane Smith"</span>)
+    .WithLocation(<span class="tok-str">"Toronto, ON"</span>)
+    .WithAppearance(x: <span class="tok-num">72</span>, y: <span class="tok-num">690</span>, width: <span class="tok-num">220</span>, height: <span class="tok-num">60</span>);
+
+PdfDocument.Create()
+    .WithSignature(sigOpts)
+    .AddPage(PageSizes.A4, canvas => { <span class="tok-cm">/* ... content ... */</span> })
+    .Save(<span class="tok-str">"signed.pdf"</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="pubkey">
+
+  <!-- ── PUBLIC-KEY ENCRYPTION ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Certificate-based encryption</h2>
+    <p class="docs-p">Encrypt a PDF so only holders of a specific X.509 certificate's private key can open it — no shared password needed. Uses <code>/Filter /Adobe.PubSec</code>, V=4, AES-128. Multiple recipient certificates are supported; any one holder can open the document.</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+<span class="tok-kw">using</span> Majorsilence.Pdf.Security;
+<span class="tok-kw">using</span> System.Security.Cryptography.X509Certificates;
+
+<span class="tok-cm">// Load the recipient's public certificate (no private key needed at encryption time)</span>
+X509Certificate2 cert = <span class="tok-kw">new</span> X509Certificate2(<span class="tok-str">"recipient.cer"</span>);
+
+<span class="tok-kw">var</span> security = PdfPublicKeySecurity.ForRecipients(cert)
+    .WithPermissions(PdfPermissions.Print | PdfPermissions.CopyText);
+
+PdfDocument.Create()
+    .WithPublicKeySecurity(security)
+    .WithTitle(<span class="tok-str">"Confidential Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Only the certificate holder can open this."</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">14</span>));
+    })
+    .Save(<span class="tok-str">"encrypted.pdf"</span>);
+
+<span class="tok-cm">// Multiple recipients — any one of them can open the document</span>
+<span class="tok-kw">var</span> multi = PdfPublicKeySecurity.ForRecipients(cert1, cert2, cert3);</pre>
+
+    <h3 class="docs-h3">PdfPublicKeySecurity reference</h3>
+    <table class="api-table">
+      <thead><tr><th>Member</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>PdfPublicKeySecurity.ForRecipients(cert, …)</td><td>Create a public-key security descriptor for one or more recipient certificates. Each recipient's public key encrypts a copy of the document key via CMS EnvelopedData (RSA).</td></tr>
+        <tr><td>.WithPermissions(flags)</td><td>Bitfield of <code>PdfPermissions</code> flags to grant (same flags as password protection).</td></tr>
+        <tr><td>doc.WithPublicKeySecurity(security)</td><td>Attach the descriptor to the document. Mutually exclusive with <code>WithSecurity</code> (password) and <code>WithConformance</code> (PDF/A).</td></tr>
+      </tbody>
+    </table>
+
+    <div class="docs-note">
+      In production supply real certificates from a trusted CA. For testing you can generate a self-signed certificate at runtime using <code>System.Security.Cryptography.X509Certificates.CertificateRequest</code> — see example 23 in the example project for the pattern.
     </div>
   </div>
 
