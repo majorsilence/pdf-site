@@ -1,0 +1,426 @@
+---
+layout: default
+title: "为什么选择 Majorsilence.Pdf？"
+description: "Majorsilence.Pdf 与 iText、QuestPDF、PdfSharp 及 HTML 转 PDF 工具的对比——以及何时应该选择其他方案。"
+---
+
+<style>
+  .why-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .why-back {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+
+  .why-back:hover { text-decoration: underline; }
+
+  .why-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .why-title {
+    font-family: 'Newsreader', serif;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 20px;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+
+  @media (max-width: 600px) {
+    .why-title { font-size: 36px; }
+  }
+
+  .why-lead {
+    font-family: 'Newsreader', serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0 0 36px;
+  }
+
+  hr.why-rule {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 44px 0;
+  }
+
+  .why-h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+
+  .why-h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 28px 0 8px;
+  }
+
+  .why-p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+
+  .why-section {
+    margin-bottom: 0;
+  }
+
+  /* comparison table */
+  .cmp-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 24px;
+  }
+
+  .cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    min-width: 620px;
+  }
+
+  .cmp-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--line);
+    white-space: nowrap;
+  }
+
+  .cmp-table th:first-child {
+    min-width: 160px;
+  }
+
+  .cmp-table td {
+    padding: 11px 14px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .cmp-table td:first-child {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .cmp-table tr:last-child td { border-bottom: none; }
+
+  .cmp-table tr.cmp-highlight td {
+    background: var(--accent-soft);
+  }
+
+  .cmp-table tr.cmp-highlight td:first-child {
+    color: var(--accent);
+  }
+
+  /* pill badges */
+  .pill {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .pill-green  { background: rgba(16,185,129,0.13); color: #059669; }
+  .pill-yellow { background: rgba(245,158,11,0.13); color: #B45309; }
+  .pill-red    { background: rgba(239,68,68,0.12);  color: #DC2626; }
+  .pill-blue   { background: var(--accent-soft);    color: var(--accent); }
+
+  /* use/avoid cards */
+  .use-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 620px) {
+    .use-grid { grid-template-columns: 1fr; }
+  }
+
+  .use-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+
+  .use-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .use-card-title.green { color: #059669; }
+  .use-card-title.yellow { color: #B45309; }
+
+  .use-card ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  .use-card ul li { margin-bottom: 4px; }
+
+  /* alt library entries */
+  .alt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 8px;
+  }
+
+  .alt-entry {
+    border-left: 3px solid var(--line);
+    padding: 4px 0 4px 18px;
+  }
+
+  .alt-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .alt-when {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* note box */
+  .why-note {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+</style>
+
+<div class="why-wrap">
+  <a href="{{ '/zh/' | relative_url }}" class="why-back">← 首页</a>
+
+  <div class="why-eyebrow">诚实的比较</div>
+  <h1 class="why-title">为什么选择 Majorsilence.Pdf？</h1>
+  <p class="why-lead">.NET 的 PDF 库并不稀缺。以下是对 Majorsilence.Pdf 定位的一次清晰审视：它擅长什么，以及在什么情况下您应该改用其他工具。</p>
+
+  <hr class="why-rule">
+
+  <!-- ── COMPARISON TABLE ── -->
+  <div class="why-section">
+    <h2 class="why-h2">库对比</h2>
+    <p class="why-p">下表涵盖了最常被选用的 .NET PDF 库。所有信息均基于截至 2026 年年中的公开文档。</p>
+
+    <div class="cmp-table-wrap">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>库</th>
+            <th>许可证</th>
+            <th>依赖项</th>
+            <th>包大小</th>
+            <th>API 模型</th>
+            <th>.NET 支持</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cmp-highlight">
+            <td>Majorsilence.Pdf</td>
+            <td><span class="pill pill-green">MIT / Apache / BSD</span></td>
+            <td><span class="pill pill-green">零</span></td>
+            <td>~75 KB</td>
+            <td>画布 / 流式接口</td>
+            <td>NS2.0, .NET 8 &amp; 10</td>
+          </tr>
+          <tr>
+            <td>iText 7</td>
+            <td><span class="pill pill-yellow">AGPL 或商业许可</span></td>
+            <td>多个 NuGet 引用</td>
+            <td>~6 MB</td>
+            <td>文档/元素树</td>
+            <td>.NET Standard 2.0+</td>
+          </tr>
+          <tr>
+            <td>QuestPDF</td>
+            <td><span class="pill pill-yellow">社区版 / 商业版</span></td>
+            <td>SkiaSharp（原生）</td>
+            <td>~10 MB（含原生库）</td>
+            <td>流式布局引擎</td>
+            <td>.NET 6+</td>
+          </tr>
+          <tr>
+            <td>PdfSharp</td>
+            <td><span class="pill pill-green">MIT</span></td>
+            <td>无（核心部分）</td>
+            <td>~400 KB</td>
+            <td>GDI 风格绘图</td>
+            <td>.NET 6+（v0.1.x 支持 NS2.0）</td>
+          </tr>
+          <tr>
+            <td>Syncfusion PDF</td>
+            <td><span class="pill pill-yellow">商业版 / 社区版</span></td>
+            <td>Syncfusion 套件</td>
+            <td>~4 MB</td>
+            <td>文档/元素树</td>
+            <td>.NET Standard 2.0+</td>
+          </tr>
+          <tr>
+            <td>Puppeteer / wkhtmltopdf</td>
+            <td><span class="pill pill-green">MIT（Puppeteer）</span></td>
+            <td><span class="pill pill-red">需要原生二进制文件</span></td>
+            <td>50–150 MB（浏览器）</td>
+            <td>HTML → PDF 渲染</td>
+            <td>任意（通过 CLI/桥接）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="why-p">QuestPDF 的“社区版”对年收入低于 100 万美元的组织免费；超过该门槛则需要付费许可证。iText 7 对闭源软件要求商业许可证。Syncfusion 为个人开发者和小团队提供免费的社区许可证。</p>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── WHEN TO USE ── -->
+  <div class="why-section">
+    <h2 class="why-h2">何时选择 Majorsilence.Pdf</h2>
+
+    <div class="use-grid">
+      <div class="use-card">
+        <div class="use-card-title green">适合的场景</div>
+        <ul>
+          <li>零运行时依赖是硬性要求——容器、AWS Lambda、AOT 编译，或严格的安全审计</li>
+          <li>您需要 MIT、Apache-2.0 或 BSD-3-Clause 许可，且不希望有 AGPL 带来的复杂性</li>
+          <li>您希望拥有一个小巧、可审计的代码库，无需管理任何原生二进制文件</li>
+          <li>您的思维模型是基于画布坐标的绘制——在 (x, y) 处放置文本、绘制线条、嵌入图像</li>
+          <li>您正在构建发票、报表、证书、收据或数据导出，且您完全掌控布局</li>
+          <li>裁剪友好性或 AOT 编译很重要（无服务器冷启动、嵌入式 .NET）</li>
+          <li>您希望在 Windows、Linux 和 macOS 上发布，而不必担心原生字体渲染库</li>
+        </ul>
+      </div>
+      <div class="use-card">
+        <div class="use-card-title yellow">不太适合的场景</div>
+        <ul>
+          <li>您需要读取、编辑或合并带有注释、AcroForms 或 XFA 的复杂现有 PDF</li>
+          <li>监管机构要求 PDF/A 或 PDF/UA 合规认证</li>
+          <li>您更喜欢基于流式布局的模型（自动换行的段落、可自动分页的表格），而非显式坐标</li>
+          <li>您需要生产级的阿拉伯文整形或复杂的 BiDi 文本渲染</li>
+          <li>您的内容已经以 HTML/CSS 模板形式存在，并且像素级精确的浏览器渲染至关重要</li>
+          <li>您需要高级的带时间戳数字签名（带 TSA 的 PKCS#12）或长期验证（PAdES LTV）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── ALTERNATIVES ── -->
+  <div class="why-section">
+    <h2 class="why-h2">何时选择其他方案</h2>
+    <p class="why-p">以下是诚实的建议。请根据自身约束条件选择合适的工具。</p>
+
+    <div class="alt-list">
+      <div class="alt-entry">
+        <div class="alt-name">iText 7</div>
+        <div class="alt-when">如果您需要 .NET 中最完整的 PDF 功能集——AcroForm 操作、PAdES/LTV 数字签名、PDF/A 和 PDF/UA 生成、编辑遮盖，或读取和修改复杂的现有 PDF——并且您可以接受 AGPL 许可证或购买商业许可证。</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">QuestPDF</div>
+        <div class="alt-when">如果您更倾向于以行、列和流动内容的方式思考（布局引擎而非绘图画布），且您的营收低于社区版门槛。QuestPDF 的流式文档模型非常适合内容丰富的文档，其中自动分页比像素级精确的定位更重要。</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">PdfSharp</div>
+        <div class="alt-when">如果您想要另一个零依赖的 MIT 库，具有 GDI 风格的绘图 API，并面向 .NET 6+。PdfSharp 是一个可靠的替代方案，拥有更大的社区和更长的历史。这两个库的优势相似，可评估其 API 风格以确定哪个更适合您的团队。</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">Puppeteer / Playwright / wkhtmltopdf</div>
+        <div class="alt-when">如果您的文档内容已经以 HTML + CSS 形式编写——例如由 Razor 视图渲染的模板化发票——并且您需要像素级精确的浏览器引擎渲染（网络字体、CSS grid、背景图像）。代价是需要依赖较大的原生二进制文件,且生成速度较慢。</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">Syncfusion / DevExpress / Telerik</div>
+        <div class="alt-when">如果您已经拥有这些组件套件之一的许可,并希望为所有 UI 和文档生成需求使用单一供应商。这些套件中捆绑的 PDF 库功能齐全,并在其生态系统内得到良好支持。</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── DESIGN PHILOSOPHY ── -->
+  <div class="why-section">
+    <h2 class="why-h2">设计理念</h2>
+    <p class="why-p">大多数 PDF 库诞生于 .NET 还等同于 Windows、NuGet 还很年轻,“零依赖”尚未成为设计目标的年代。它们随着时间推移积累了功能、原生代码和许可证复杂性。</p>
+    <p class="why-p">Majorsilence.Pdf 从不同的约束条件出发：</p>
+
+    <div class="why-note">
+      <strong>经过生产环境验证。</strong>Majorsilence.Pdf 是驱动 <a href="https://reporting.majorsilence.com" style="color:var(--accent);">Majorsilence Reporting</a> 的 PDF 渲染引擎。它不是一个副业项目——它是 Reporting 生成真实文档时所运行的库。
+    </div>
+
+    <h3 class="why-h3">让繁琐的事情变简单。</h3>
+    <p class="why-p">生成一份 PDF——发票、证书、数据导出——应该只需要几行代码，而不是一整页的样板代码。这个库的接口有意保持精简：一个文档、若干页面、一块画布。您放置内容，您保存。就这么简单。</p>
+
+    <h3 class="why-h3">零就应该是真正的零。</h3>
+    <p class="why-p">而不是“安装平台包后运行时才是零”或“不使用字体时才是零”。只需一次 <code>dotnet add package</code>，别无他物。没有需要审计的传递性依赖树，没有需要放进容器镜像的原生二进制文件，也没有需要与法务审查的 AGPL 风险。</p>
+
+    <h3 class="why-h3">纯托管代码。</h3>
+    <p class="why-p">整个库都是 IL 代码。它可以干净地裁剪、提前编译（AOT），并且在 Windows、Linux、macOS、ARM 和 x64 上表现一致——无需按条件选择原生资源或进行运行时功能检测。</p>
+
+    <div class="why-note">
+      <strong>三重许可。</strong>可任选 MIT、Apache-2.0 或 BSD-3-Clause 中最适合您项目的一种。没有 AGPL 层级，没有社区版与商业版的区分，也没有会改变您义务的营收门槛。
+    </div>
+  </div>
+
+</div>

@@ -1,5 +1,70 @@
+{% assign p = page.url %}
+{% assign lang = 'en' %}
+{% assign base = p %}
+{% if p == '/fr' or p contains '/fr/' %}
+  {% assign lang = 'fr' %}
+  {% assign base = p | remove_first: '/fr' %}
+{% elsif p == '/es' or p contains '/es/' %}
+  {% assign lang = 'es' %}
+  {% assign base = p | remove_first: '/es' %}
+{% elsif p == '/zh' or p contains '/zh/' %}
+  {% assign lang = 'zh' %}
+  {% assign base = p | remove_first: '/zh' %}
+{% endif %}
+{% if base == '' %}{% assign base = '/' %}{% endif %}
+
+{% assign en_url = base %}
+{% if base == '/' %}
+  {% assign fr_url = '/fr/' %}
+  {% assign es_url = '/es/' %}
+  {% assign zh_url = '/zh/' %}
+{% else %}
+  {% assign fr_url = '/fr' | append: base %}
+  {% assign es_url = '/es' | append: base %}
+  {% assign zh_url = '/zh' | append: base %}
+{% endif %}
+
+{% assign lang_prefix = '' %}
+{% if lang == 'fr' %}{% assign lang_prefix = '/fr' %}{% endif %}
+{% if lang == 'es' %}{% assign lang_prefix = '/es' %}{% endif %}
+{% if lang == 'zh' %}{% assign lang_prefix = '/zh' %}{% endif %}
+
+{% case lang %}
+  {% when 'fr' %}
+    {% assign t_home = 'accueil' %}
+    {% assign t_docs = 'docs' %}
+    {% assign t_why = 'pourquoi ?' %}
+    {% assign t_reporting = 'reporting' %}
+    {% assign t_github = 'github ↗' %}
+    {% assign t_license = 'Sous licence MIT' %}
+    {% assign t_footer_docs = 'docs' %}
+  {% when 'es' %}
+    {% assign t_home = 'inicio' %}
+    {% assign t_docs = 'docs' %}
+    {% assign t_why = '¿por qué?' %}
+    {% assign t_reporting = 'reporting' %}
+    {% assign t_github = 'github ↗' %}
+    {% assign t_license = 'Con licencia MIT' %}
+    {% assign t_footer_docs = 'docs' %}
+  {% when 'zh' %}
+    {% assign t_home = '首页' %}
+    {% assign t_docs = '文档' %}
+    {% assign t_why = '为什么？' %}
+    {% assign t_reporting = 'reporting' %}
+    {% assign t_github = 'github ↗' %}
+    {% assign t_license = 'MIT 许可' %}
+    {% assign t_footer_docs = '文档' %}
+  {% else %}
+    {% assign t_home = 'home' %}
+    {% assign t_docs = 'docs' %}
+    {% assign t_why = 'why this?' %}
+    {% assign t_reporting = 'reporting' %}
+    {% assign t_github = 'github ↗' %}
+    {% assign t_license = 'MIT licensed' %}
+    {% assign t_footer_docs = 'docs' %}
+{% endcase %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -169,6 +234,32 @@
       border-left: 1px solid var(--line);
     }
 
+    .lang-switcher {
+      display: flex;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+    }
+
+    .lang-btn {
+      padding: 7px 10px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--ink-faint);
+      text-decoration: none;
+    }
+
+    .lang-btn.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .lang-btn + .lang-btn {
+      border-left: 1px solid var(--line);
+    }
+
     /* ── MAIN ── */
     .site-main { flex: 1; }
 
@@ -263,16 +354,22 @@
 
   <!-- NAV -->
   <nav class="site-nav">
-    <a href="{{ '/' | relative_url }}" class="nav-logo">
+    <a href="{{ lang_prefix | append: '/' | relative_url }}" class="nav-logo">
       <div class="nav-logo-badge">pdf</div>
       <span class="nav-logo-name">Majorsilence<span>.Pdf</span></span>
     </a>
     <div class="nav-links">
-      <a href="{{ '/' | relative_url }}" class="nav-link{% if page.url == '/' or page.url == '/index.html' %} active{% endif %}">home</a>
-      <a href="{{ '/docs/' | relative_url }}" class="nav-link{% if page.url contains '/docs' %} active{% endif %}">docs</a>
-      <a href="{{ '/why/' | relative_url }}" class="nav-link{% if page.url contains '/why' %} active{% endif %}">why this?</a>
-      <a href="https://reporting.majorsilence.com" class="nav-link">reporting</a>
-      <a href="https://github.com/majorsilence" class="nav-link-gh" target="_blank" rel="noopener">github ↗</a>
+      <a href="{{ lang_prefix | append: '/' | relative_url }}" class="nav-link{% if base == '/' or base == '/index.html' %} active{% endif %}">{{ t_home }}</a>
+      <a href="{{ lang_prefix | append: '/docs/' | relative_url }}" class="nav-link{% if base contains '/docs' %} active{% endif %}">{{ t_docs }}</a>
+      <a href="{{ lang_prefix | append: '/why/' | relative_url }}" class="nav-link{% if base contains '/why' %} active{% endif %}">{{ t_why }}</a>
+      <a href="https://reporting.majorsilence.com" class="nav-link">{{ t_reporting }}</a>
+      <a href="https://github.com/majorsilence" class="nav-link-gh" target="_blank" rel="noopener">{{ t_github }}</a>
+      <div class="lang-switcher">
+        <a href="{{ en_url | relative_url }}" class="lang-btn{% if lang == 'en' %} active{% endif %}">EN</a>
+        <a href="{{ fr_url | relative_url }}" class="lang-btn{% if lang == 'fr' %} active{% endif %}">FR</a>
+        <a href="{{ es_url | relative_url }}" class="lang-btn{% if lang == 'es' %} active{% endif %}">ES</a>
+        <a href="{{ zh_url | relative_url }}" class="lang-btn{% if lang == 'zh' %} active{% endif %}">中文</a>
+      </div>
       <div class="theme-switcher">
         <button class="theme-btn" data-theme-target="light">light</button>
         <button class="theme-btn" data-theme-target="dark">dark</button>
@@ -290,12 +387,12 @@
   <footer class="site-footer">
     <div class="footer-logo">
       <div class="footer-badge">pdf</div>
-      <span class="footer-copy">MIT licensed · © 2026 Majorsilence.Pdf</span>
+      <span class="footer-copy">{{ t_license }} · © 2026 Majorsilence.Pdf</span>
     </div>
     <div class="footer-links">
       <a href="https://github.com/majorsilence" target="_blank" rel="noopener">github</a>
       <a href="https://www.nuget.org/packages/Majorsilence.Pdf" target="_blank" rel="noopener">nuget</a>
-      <a href="{{ '/docs/' | relative_url }}">docs</a>
+      <a href="{{ lang_prefix | append: '/docs/' | relative_url }}">{{ t_footer_docs }}</a>
     </div>
   </footer>
 

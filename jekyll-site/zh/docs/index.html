@@ -1,0 +1,1063 @@
+---
+layout: default
+title: "快速入门"
+description: "开始使用 Majorsilence.Pdf——两分钟内生成您的第一个 PDF。"
+---
+
+<style>
+  .docs-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .docs-back {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+
+  .docs-back:hover { text-decoration: underline; }
+
+  .docs-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .docs-title {
+    font-family: 'Newsreader', serif;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 20px;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+
+  @media (max-width: 600px) {
+    .docs-title { font-size: 36px; }
+  }
+
+  .docs-lead {
+    font-family: 'Newsreader', serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0 0 36px;
+  }
+
+  hr.docs-rule {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 40px 0;
+  }
+
+  /* section heading */
+  .docs-h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 12px;
+  }
+
+  .docs-h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 28px 0 8px;
+  }
+
+  .docs-p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+
+  /* stacked section = heading + optional p + pre */
+  .docs-section {
+    margin-bottom: 40px;
+  }
+
+  /* inline code */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* API reference table */
+  .api-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-bottom: 16px;
+  }
+
+  .api-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .api-table td {
+    padding: 9px 12px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .api-table td:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .api-table tr:last-child td { border-bottom: none; }
+  .api-table tbody tr:nth-child(even) td { background: var(--accent-soft); }
+
+  /* toc */
+  .docs-toc {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+
+  .docs-toc-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .docs-toc ol {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 24px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 500px) {
+    .docs-toc ol { grid-template-columns: 1fr; }
+  }
+
+  .docs-toc a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .docs-toc a:hover { text-decoration: underline; }
+
+  /* note box */
+  .docs-note {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+</style>
+
+<div class="docs-wrap">
+  <a href="{{ '/zh/' | relative_url }}" class="docs-back">← 首页</a>
+
+  <div class="docs-eyebrow">快速入门</div>
+  <h1 class="docs-title">两分钟内生成您的第一个 PDF</h1>
+  <p class="docs-lead">Majorsilence.Pdf 是一个面向 .NET 8 和 10 的零依赖、自包含 PDF 库。只有一个包，无原生二进制文件——创建文档、绘制文本、形状和图像、嵌入 TrueType 字体，并保存到文件或流。</p>
+
+  <!-- TOC -->
+  <div class="docs-toc">
+    <div class="docs-toc-title">本页内容</div>
+    <ol>
+      <li><a href="#install">安装</a></li>
+      <li><a href="#hello">Hello, PDF</a></li>
+      <li><a href="#styles">API 风格</a></li>
+      <li><a href="#text">文本与 TextStyle</a></li>
+      <li><a href="#textwrap">文本换行</a></li>
+      <li><a href="#shapes">形状</a></li>
+      <li><a href="#opacity">不透明度</a></li>
+      <li><a href="#lines">线条与曲线</a></li>
+      <li><a href="#images">图像</a></li>
+      <li><a href="#tables">表格</a></li>
+      <li><a href="#annotations">链接与工具提示</a></li>
+      <li><a href="#fonts">TrueType 字体</a></li>
+      <li><a href="#multipage">多页文档</a></li>
+      <li><a href="#save">保存选项</a></li>
+      <li><a href="#metadata">元数据与版本</a></li>
+      <li><a href="#pdfa">PDF/A 合规</a></li>
+      <li><a href="#rtl">从右到左文本</a></li>
+      <li><a href="#security">密码保护</a></li>
+      <li><a href="#signing">数字签名</a></li>
+      <li><a href="#pubkey">公钥加密</a></li>
+      <li><a href="#merge">PDF 合并</a></li>
+    </ol>
+  </div>
+
+  <hr class="docs-rule" id="install">
+
+  <!-- ── INSTALLATION ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">安装</h2>
+    <p class="docs-p">一个单独的 NuGet 包——无需任何配套库：</p>
+    <pre><span class="tok-cm"># .NET CLI</span>
+dotnet add package Majorsilence.Pdf
+
+<span class="tok-cm"># Package Manager Console</span>
+Install-Package Majorsilence.Pdf</pre>
+  </div>
+
+  <hr class="docs-rule" id="hello">
+
+  <!-- ── HELLO PDF ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">Hello, PDF</h2>
+    <p class="docs-p">使用 <code>PdfDocument.Create()</code> 创建文档，添加一页，在画布上绘制，然后保存。坐标单位为 PDF 点（1 pt = 1/72 英寸），原点位于左上角——Y 值向下递增。</p>
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+
+PdfDocument.Create()
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Hello, PDF!"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">24</span>).WithBold());
+        canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">96</span>, <span class="tok-num">520</span>, <span class="tok-num">96</span>);
+    })
+    .Save(<span class="tok-str">"hello.pdf"</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="styles">
+
+  <!-- ── API STYLES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">API 风格——回调式与增量式</h2>
+    <p class="docs-p">选择最适合您代码结构的方式：</p>
+
+    <h3 class="docs-h3">回调风格（流式链）</h3>
+    <p class="docs-p">向 <code>AddPage</code> 传入一个绘制 lambda。文档本身会被返回，以便继续链式调用。最适合一次性构建的短文档。</p>
+    <pre>PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"My Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Chapter 1"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    })
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Chapter 2"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    })
+    .Save(<span class="tok-str">"report.pdf"</span>);</pre>
+
+    <h3 class="docs-h3">增量风格</h3>
+    <p class="docs-p">不带回调的 <code>AddPage</code> 会直接返回 <code>PdfCanvas</code>。适用于以命令式方式构建内容，例如在循环中。</p>
+    <pre><span class="tok-kw">var</span> doc = PdfDocument.Create().WithTitle(<span class="tok-str">"My Report"</span>);
+
+<span class="tok-kw">foreach</span> (<span class="tok-kw">var</span> chapter <span class="tok-kw">in</span> chapters)
+{
+    <span class="tok-kw">var</span> canvas = doc.AddPage(PageSizes.A4);
+    canvas.DrawText(chapter.Title, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+        TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    <span class="tok-cm">// ... draw body ...</span>
+}
+
+doc.Save(<span class="tok-str">"report.pdf"</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="text">
+
+  <!-- ── TEXT ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">文本与 TextStyle</h2>
+    <p class="docs-p"><code>TextStyle</code> 是不可变的。每个 <code>With*</code> 方法都会返回一个新实例——原实例保持不变。先构建一个基础样式，再从中派生变体。</p>
+
+    <pre><span class="tok-kw">var</span> heading = TextStyle.Default
+    .WithFamily(<span class="tok-str">"Helvetica"</span>)
+    .WithSize(<span class="tok-num">22</span>)
+    .WithBold()
+    .WithColor(PdfColor.FromHex(<span class="tok-str">"#1A56A0"</span>));
+
+<span class="tok-kw">var</span> body = TextStyle.Default
+    .WithFamily(<span class="tok-str">"Times-Roman"</span>)
+    .WithSize(<span class="tok-num">11</span>);
+
+<span class="tok-kw">var</span> mono = TextStyle.Default
+    .WithFamily(<span class="tok-str">"Courier"</span>)
+    .WithSize(<span class="tok-num">10</span>);
+
+canvas.DrawText(<span class="tok-str">"Invoice #1024"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, heading);
+canvas.DrawText(<span class="tok-str">"Due: July 17, 2026"</span>, <span class="tok-num">72</span>, <span class="tok-num">106</span>, body);
+
+<span class="tok-cm">// Alignment</span>
+canvas.DrawText(<span class="tok-str">"Right-aligned"</span>, <span class="tok-num">540</span>, <span class="tok-num">72</span>,
+    body.WithAlignment(TextAlignment.Right));
+
+<span class="tok-cm">// Decorations</span>
+canvas.DrawText(<span class="tok-str">"underlined"</span>,     <span class="tok-num">72</span>, <span class="tok-num">140</span>, body.WithUnderline());
+canvas.DrawText(<span class="tok-str">"strikethrough"</span>,  <span class="tok-num">72</span>, <span class="tok-num">160</span>, body.WithStrikethrough());
+canvas.DrawText(<span class="tok-str">"overline"</span>,       <span class="tok-num">72</span>, <span class="tok-num">180</span>, body.WithOverline());</pre>
+
+    <h3 class="docs-h3">TextStyle 参考</h3>
+    <table class="api-table">
+      <thead><tr><th>方法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>.WithFamily(name)</td><td>按名称指定标准字体。内置字体：<code>Helvetica</code>、<code>Times-Roman</code>、<code>Courier</code>、<code>Symbol</code>、<code>ZapfDingbats</code>。也接受在 <code>FontRegistry</code> 中注册的任意字体族。</td></tr>
+        <tr><td>.WithFontFile(path)</td><td>通过绝对文件路径嵌入 TrueType / OpenType 字体。优先级高于 <code>WithFamily</code>。</td></tr>
+        <tr><td>.WithSize(pts)</td><td>字号，单位为 PDF 点。默认值：12。</td></tr>
+        <tr><td>.WithColor(color)</td><td>文本前景色。默认值：<code>PdfColor.Black</code>。</td></tr>
+        <tr><td>.WithBold()</td><td>粗体字重。</td></tr>
+        <tr><td>.WithItalic()</td><td>斜体样式。</td></tr>
+        <tr><td>.WithAlignment(a)</td><td><code>TextAlignment.Left</code>（默认）、<code>Center</code>、<code>Right</code>。X 为参考点。</td></tr>
+        <tr><td>.WithUnderline()</td><td>下划线装饰。</td></tr>
+        <tr><td>.WithStrikethrough()</td><td>删除线装饰。</td></tr>
+        <tr><td>.WithOverline()</td><td>上划线装饰。</td></tr>
+        <tr><td>.WithVertical()</td><td>将文本逆时针旋转 90°。</td></tr>
+        <tr><td>.WithRightToLeft()</td><td>反转码位顺序以实现视觉上的 RTL 渲染（希伯来语、阿拉伯语）。请与 <code>TextAlignment.Right</code> 搭配使用，使 X 成为右侧锚点。</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="docs-h3">PdfColor</h3>
+    <pre><span class="tok-cm">// Named colours</span>
+PdfColor.Black    PdfColor.White    PdfColor.Red
+PdfColor.Green    PdfColor.Blue     PdfColor.Yellow
+PdfColor.Orange   PdfColor.Gray     PdfColor.LightGray   PdfColor.DarkGray
+
+<span class="tok-cm">// From CSS hex string</span>
+PdfColor.FromHex(<span class="tok-str">"#1A56A0"</span>)
+
+<span class="tok-cm">// From RGB bytes (0–255)</span>
+PdfColor.FromRgb(<span class="tok-num">26</span>, <span class="tok-num">86</span>, <span class="tok-num">160</span>)
+
+<span class="tok-cm">// Constructor form — same as FromRgb</span>
+<span class="tok-kw">new</span> PdfColor(<span class="tok-num">26</span>, <span class="tok-num">86</span>, <span class="tok-num">160</span>)</pre>
+
+    <h3 class="docs-h3">测量文本宽度</h3>
+    <p class="docs-p">使用 <code>MeasureTextWidth</code> 可以将标签相对于其他内容定位：</p>
+    <pre><span class="tok-kw">float</span> w = canvas.MeasureTextWidth(<span class="tok-str">"Hello"</span>, body);
+canvas.DrawText(<span class="tok-str">"World"</span>, <span class="tok-num">72</span> + w + <span class="tok-num">4</span>, <span class="tok-num">72</span>, body);</pre>
+  </div>
+
+  <hr class="docs-rule" id="textwrap">
+
+  <!-- ── TEXT WRAPPING ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">多行文本换行</h2>
+    <p class="docs-p"><code>DrawTextBox</code> 会将文本自动换行以适应一个边界框。硬换行符（<code>\n</code>）会强制换行；单词永远不会被从中间截断。该方法返回文本溢出边界框的字符位置索引，以便您可以在第二个框中或下一页继续该段落。</p>
+
+    <pre><span class="tok-kw">var</span> body = TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">11</span>);
+
+<span class="tok-kw">string</span> text = <span class="tok-str">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "</span> +
+              <span class="tok-str">"Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n"</span> +
+              <span class="tok-str">"Second paragraph starts here."</span>;
+
+<span class="tok-cm">// Render into a 400 × 120 pt box; returns index of first character that did not fit</span>
+<span class="tok-kw">int</span> overflow = canvas.DrawTextBox(text, x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>,
+    width: <span class="tok-num">400</span>, height: <span class="tok-num">120</span>, body);
+
+<span class="tok-kw">if</span> (overflow &lt; text.Length)
+{
+    <span class="tok-cm">// Continue overflowed text in a second box below</span>
+    canvas.DrawTextBox(text.Substring(overflow), x: <span class="tok-num">72</span>, y: <span class="tok-num">210</span>,
+        width: <span class="tok-num">400</span>, height: <span class="tok-num">120</span>, body);
+}
+
+<span class="tok-cm">// Centre- and right-aligned boxes</span>
+canvas.DrawTextBox(<span class="tok-str">"Centred text\nSecond line"</span>, <span class="tok-num">72</span>, <span class="tok-num">350</span>, <span class="tok-num">300</span>, <span class="tok-num">80</span>,
+    body.WithAlignment(TextAlignment.Center));
+
+canvas.DrawTextBox(<span class="tok-str">"Right-aligned\nAll lines snap right"</span>, <span class="tok-num">72</span>, <span class="tok-num">450</span>, <span class="tok-num">300</span>, <span class="tok-num">80</span>,
+    body.WithAlignment(TextAlignment.Right));</pre>
+
+    <h3 class="docs-h3">DrawTextBox 参考</h3>
+    <table class="api-table">
+      <thead><tr><th>参数</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>text</td><td>要渲染的字符串。<code>\n</code> 会在该位置强制换行。</td></tr>
+        <tr><td>x, y</td><td>边界框左上角在 PDF 点单位下的坐标。</td></tr>
+        <tr><td>width, height</td><td>边界框尺寸。超出 <code>y + height</code> 的文本会被省略。</td></tr>
+        <tr><td>style</td><td><code>TextStyle</code>——字体、字号、颜色和对齐方式均会生效。<code>TextAlignment</code> 是相对于边界框宽度而言的。</td></tr>
+        <tr><td>返回值 int</td><td>第一个未能容纳的字符的索引。如果全部文本都被容纳，则等于 <code>text.Length</code>。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="shapes">
+
+  <!-- ── SHAPES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">形状</h2>
+    <p class="docs-p"><code>ShapeStyle</code> 独立控制填充和描边。所有形状方法都接受一个可选的 <code>ShapeStyle</code>；默认值为 1 pt 黑色描边、无填充。</p>
+
+    <pre><span class="tok-cm">// Rectangles</span>
+canvas.DrawRectangle(<span class="tok-num">50</span>, <span class="tok-num">50</span>, <span class="tok-num">200</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Filled(PdfColor.LightGray));
+
+canvas.DrawRectangle(<span class="tok-num">50</span>, <span class="tok-num">150</span>, <span class="tok-num">200</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Stroked(PdfColor.Black, width: <span class="tok-num">2</span>));
+
+canvas.DrawRectangle(<span class="tok-num">50</span>, <span class="tok-num">250</span>, <span class="tok-num">200</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Filled(PdfColor.FromHex(<span class="tok-str">"#E8F4FF"</span>))
+              .WithStroke(PdfColor.Blue, width: <span class="tok-num">1</span>));
+
+canvas.DrawRectangle(<span class="tok-num">50</span>, <span class="tok-num">350</span>, <span class="tok-num">200</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Stroked(PdfColor.DarkGray).Dashed());
+
+<span class="tok-cm">// Ellipses (same ShapeStyle options)</span>
+canvas.DrawEllipse(<span class="tok-num">300</span>, <span class="tok-num">50</span>, <span class="tok-num">150</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Filled(PdfColor.Blue));
+
+<span class="tok-cm">// Polygons</span>
+<span class="tok-kw">var</span> triangle = <span class="tok-kw">new</span> List&lt;(<span class="tok-kw">float</span> x, <span class="tok-kw">float</span> y)&gt;
+{
+    (<span class="tok-num">300</span>, <span class="tok-num">200</span>), (<span class="tok-num">400</span>, <span class="tok-num">350</span>), (<span class="tok-num">200</span>, <span class="tok-num">350</span>)
+};
+canvas.DrawPolygon(triangle,
+    ShapeStyle.Filled(PdfColor.Orange)
+              .WithStroke(PdfColor.DarkGray));</pre>
+
+    <h3 class="docs-h3">ShapeStyle 参考</h3>
+    <table class="api-table">
+      <thead><tr><th>工厂方法 / 方法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>ShapeStyle.Filled(color)</td><td>纯色填充，无描边。</td></tr>
+        <tr><td>ShapeStyle.Stroked(color, width)</td><td>仅描边，无填充。宽度默认为 1。</td></tr>
+        <tr><td>.WithFill(color)</td><td>添加或替换填充颜色。</td></tr>
+        <tr><td>.WithStroke(color, width)</td><td>添加或替换描边颜色和宽度。</td></tr>
+        <tr><td>.WithNoFill()</td><td>移除填充。</td></tr>
+        <tr><td>.WithNoStroke()</td><td>移除描边。</td></tr>
+        <tr><td>.Dashed()</td><td>为描边设置虚线样式。</td></tr>
+        <tr><td>.Dotted()</td><td>为描边设置点线样式。</td></tr>
+        <tr><td>.WithFillOpacity(alpha)</td><td>填充透明度。<code>1.0</code> = 不透明（默认）；<code>0.0</code> = 完全透明。参见<a href="#opacity">不透明度</a>。</td></tr>
+        <tr><td>.WithStrokeOpacity(alpha)</td><td>描边透明度。与 <code>WithFillOpacity</code> 使用相同的取值范围。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="opacity">
+
+  <!-- ── OPACITY ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">不透明度与透明度</h2>
+    <p class="docs-p">可以在形状上独立设置填充和描边的透明度，或通过 <code>StrokeStyle</code> 设置整体线条的不透明度。所有不透明度值的范围为 <code>0.0</code>（完全透明）到 <code>1.0</code>（完全不透明，默认值）。</p>
+
+    <pre><span class="tok-cm">// Fill opacity ramp — five blue squares from opaque to 20 % opacity</span>
+<span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">0</span>; i &lt; <span class="tok-num">5</span>; i++)
+    canvas.DrawRectangle(<span class="tok-num">72</span> + i * <span class="tok-num">50</span>, <span class="tok-num">100</span>, <span class="tok-num">40</span>, <span class="tok-num">40</span>,
+        ShapeStyle.Filled(PdfColor.Blue).WithFillOpacity(<span class="tok-num">1</span>f - i * <span class="tok-num">0</span>.2f));
+
+<span class="tok-cm">// Stroke opacity</span>
+canvas.DrawRectangle(<span class="tok-num">72</span>, <span class="tok-num">170</span>, <span class="tok-num">200</span>, <span class="tok-num">40</span>,
+    ShapeStyle.Stroked(PdfColor.Red, <span class="tok-num">3</span>f).WithStrokeOpacity(<span class="tok-num">0</span>.4f));
+
+<span class="tok-cm">// Overlapping semi-transparent shapes — backgrounds show through</span>
+canvas.DrawRectangle(<span class="tok-num">80</span>, <span class="tok-num">240</span>, <span class="tok-num">150</span>, <span class="tok-num">100</span>, ShapeStyle.Filled(PdfColor.Red));
+canvas.DrawRectangle(<span class="tok-num">155</span>, <span class="tok-num">265</span>, <span class="tok-num">150</span>, <span class="tok-num">100</span>,
+    ShapeStyle.Filled(PdfColor.Blue).WithFillOpacity(<span class="tok-num">0</span>.5f));
+canvas.DrawEllipse(<span class="tok-num">115</span>, <span class="tok-num">300</span>, <span class="tok-num">150</span>, <span class="tok-num">80</span>,
+    ShapeStyle.Filled(PdfColor.Green).WithFillOpacity(<span class="tok-num">0</span>.4f));
+
+<span class="tok-cm">// Line opacity via StrokeStyle</span>
+canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">400</span>, <span class="tok-num">450</span>, <span class="tok-num">400</span>,
+    StrokeStyle.Default.WithWidth(<span class="tok-num">4</span>).WithColor(PdfColor.DarkGray).WithOpacity(<span class="tok-num">0</span>.5f));</pre>
+
+    <h3 class="docs-h3">不透明度 API 摘要</h3>
+    <table class="api-table">
+      <thead><tr><th>方法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>ShapeStyle.WithFillOpacity(alpha)</td><td>矩形、椭圆和多边形的填充透明度。</td></tr>
+        <tr><td>ShapeStyle.WithStrokeOpacity(alpha)</td><td>相同形状类型的描边透明度。</td></tr>
+        <tr><td>StrokeStyle.WithOpacity(alpha)</td><td>使用 <code>DrawLine</code> 和 <code>DrawCurve</code> 绘制的线条的不透明度。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="lines">
+
+  <!-- ── LINES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">线条与曲线</h2>
+    <p class="docs-p"><code>StrokeStyle</code> 之于线条，正如 <code>ShapeStyle</code> 之于填充形状。</p>
+
+    <pre><span class="tok-cm">// Straight lines</span>
+canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">100</span>, <span class="tok-num">520</span>, <span class="tok-num">100</span>);  <span class="tok-cm">// 1 pt solid black</span>
+
+canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">130</span>, <span class="tok-num">520</span>, <span class="tok-num">130</span>,
+    StrokeStyle.Default.WithWidth(<span class="tok-num">2</span>).WithColor(PdfColor.Blue));
+
+canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">160</span>, <span class="tok-num">520</span>, <span class="tok-num">160</span>,
+    StrokeStyle.Default.WithWidth(<span class="tok-num">1</span>).Dashed());
+
+<span class="tok-cm">// Smooth curve through control points (Catmull-Rom spline)</span>
+<span class="tok-kw">var</span> pts = <span class="tok-kw">new</span> List&lt;(<span class="tok-kw">float</span>, <span class="tok-kw">float</span>)&gt;
+{
+    (<span class="tok-num">72</span>, <span class="tok-num">300</span>), (<span class="tok-num">150</span>, <span class="tok-num">260</span>), (<span class="tok-num">250</span>, <span class="tok-num">320</span>),
+    (<span class="tok-num">350</span>, <span class="tok-num">270</span>), (<span class="tok-num">450</span>, <span class="tok-num">310</span>), (<span class="tok-num">520</span>, <span class="tok-num">280</span>)
+};
+canvas.DrawCurve(pts,
+    StrokeStyle.Default.WithWidth(<span class="tok-num">2</span>).WithColor(PdfColor.Red));</pre>
+  </div>
+
+  <hr class="docs-rule" id="images">
+
+  <!-- ── IMAGES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">图像</h2>
+    <p class="docs-p"><code>DrawImage</code> 接受原始 JPEG 字节，或原始 RGB24 字节（每像素 3 字节，按行主序排列）。图像的左上角会放置在 <code>(x, y)</code> 处，并按指定尺寸缩放。</p>
+
+    <pre><span class="tok-cm">// JPEG from disk</span>
+<span class="tok-kw">byte</span>[] jpeg = File.ReadAllBytes(<span class="tok-str">"logo.jpg"</span>);
+canvas.DrawImage(jpeg, pixelWidth: <span class="tok-num">400</span>, pixelHeight: <span class="tok-num">200</span>,
+    isJpeg: <span class="tok-kw">true</span>, x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, width: <span class="tok-num">200</span>, height: <span class="tok-num">100</span>);
+
+<span class="tok-cm">// Raw RGB24 (e.g. a gradient generated in code)</span>
+<span class="tok-kw">const int</span> W = <span class="tok-num">200</span>, H = <span class="tok-num">150</span>;
+<span class="tok-kw">var</span> rgb = <span class="tok-kw">new byte</span>[W * H * <span class="tok-num">3</span>];
+<span class="tok-kw">for</span> (<span class="tok-kw">int</span> row = <span class="tok-num">0</span>; row &lt; H; row++)
+    <span class="tok-kw">for</span> (<span class="tok-kw">int</span> col = <span class="tok-num">0</span>; col &lt; W; col++)
+    {
+        <span class="tok-kw">int</span> i = (row * W + col) * <span class="tok-num">3</span>;
+        rgb[i]     = (<span class="tok-kw">byte</span>)(col * <span class="tok-num">255</span> / W);   <span class="tok-cm">// R</span>
+        rgb[i + <span class="tok-num">1</span>] = (<span class="tok-kw">byte</span>)(row * <span class="tok-num">255</span> / H);   <span class="tok-cm">// G</span>
+        rgb[i + <span class="tok-num">2</span>] = <span class="tok-num">128</span>;                     <span class="tok-cm">// B</span>
+    }
+canvas.DrawImage(rgb, W, H, isJpeg: <span class="tok-kw">false</span>,
+    x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, width: <span class="tok-num">200</span>, height: <span class="tok-num">150</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="tables">
+
+  <!-- ── TABLES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">表格</h2>
+    <p class="docs-p"><code>PdfTable</code> 用于布局一个带有表头行、可选交替行背景、自动单元格文本换行以及可配置边框的网格。将其传递给 <code>canvas.DrawTable()</code> 即可在指定位置渲染它。</p>
+
+    <pre><span class="tok-cm">// Column widths in PDF points</span>
+<span class="tok-kw">var</span> table = <span class="tok-kw">new</span> PdfTable(<span class="tok-kw">new float</span>[] { <span class="tok-num">180</span>, <span class="tok-num">80</span>, <span class="tok-num">90</span>, <span class="tok-num">90</span> })
+    .WithHeaderBackground(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">26</span>, <span class="tok-num">86</span>, <span class="tok-num">160</span>))
+    .WithAlternateRowBackground(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">240</span>, <span class="tok-num">245</span>, <span class="tok-num">252</span>))
+    .WithBorder(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">200</span>, <span class="tok-num">200</span>, <span class="tok-num">200</span>), <span class="tok-num">0</span>.5f)
+    .WithCellPadding(<span class="tok-num">5</span>f)
+    .WithCellTextStyle(TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">10</span>))
+    .WithHeaderTextStyle(
+        TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">10</span>)
+                         .WithBold().WithColor(PdfColor.White));
+
+<span class="tok-cm">// First AddRow call becomes the header row</span>
+table.AddRow(<span class="tok-str">"Product"</span>,         <span class="tok-str">"Qty"</span>, <span class="tok-str">"Unit Price"</span>, <span class="tok-str">"Total"</span>);
+table.AddRow(<span class="tok-str">"PDF Library Pro"</span>,  <span class="tok-str">"3"</span>,   <span class="tok-str">"$400.00"</span>,    <span class="tok-str">"$1 200.00"</span>);
+table.AddRow(<span class="tok-str">"Report Designer"</span>,  <span class="tok-str">"1"</span>,   <span class="tok-str">"$250.00"</span>,    <span class="tok-str">"$250.00"</span>);
+table.AddRow(<span class="tok-str">"Support (12 mo.)"</span>, <span class="tok-str">"1"</span>,   <span class="tok-str">"$500.00"</span>,    <span class="tok-str">"$500.00"</span>);
+
+<span class="tok-cm">// tableBottom receives the Y coordinate just below the last rendered row</span>
+canvas.DrawTable(table, x: <span class="tok-num">72</span>, y: <span class="tok-num">72</span>, <span class="tok-kw">out float</span> tableBottom);
+
+<span class="tok-cm">// Border-less "report" style</span>
+<span class="tok-kw">var</span> report = <span class="tok-kw">new</span> PdfTable(<span class="tok-kw">new float</span>[] { <span class="tok-num">200</span>, <span class="tok-num">100</span>, <span class="tok-num">100</span> })
+    .WithNoBorder()
+    .WithHeaderBackground(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">245</span>, <span class="tok-num">245</span>, <span class="tok-num">245</span>))
+    .WithCellPadding(<span class="tok-num">4</span>f)
+    .WithCellTextStyle(TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">10</span>))
+    .WithHeaderTextStyle(
+        TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">10</span>).WithBold());
+
+report.AddRow(<span class="tok-str">"Category"</span>,      <span class="tok-str">"Revenue"</span>, <span class="tok-str">"Growth"</span>);
+report.AddRow(<span class="tok-str">"North America"</span>,  <span class="tok-str">"$1.24M"</span>,  <span class="tok-str">"+12%"</span>);
+report.AddRow(<span class="tok-str">"Europe"</span>,         <span class="tok-str">"$0.89M"</span>,  <span class="tok-str">"+8%"</span>);
+
+canvas.DrawTable(report, <span class="tok-num">72</span>, <span class="tok-num">72</span> + tableBottom + <span class="tok-num">20</span>);</pre>
+
+    <h3 class="docs-h3">PdfTable 参考</h3>
+    <table class="api-table">
+      <thead><tr><th>方法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>new PdfTable(widths)</td><td>各列宽度，单位为 PDF 点。元素个数决定列数。</td></tr>
+        <tr><td>.WithHeaderBackground(color)</td><td>首行（表头行）的背景填充色。</td></tr>
+        <tr><td>.WithAlternateRowBackground(color)</td><td>每个偶数数据行的背景填充色。</td></tr>
+        <tr><td>.WithBorder(color, width)</td><td>网格线颜色和宽度。</td></tr>
+        <tr><td>.WithNoBorder()</td><td>取消所有网格线。</td></tr>
+        <tr><td>.WithCellPadding(pts)</td><td>应用于每个单元格的内边距（四周）。</td></tr>
+        <tr><td>.WithCellTextStyle(style)</td><td>数据单元格的默认 <code>TextStyle</code>。</td></tr>
+        <tr><td>.WithHeaderTextStyle(style)</td><td>表头行的 <code>TextStyle</code>。</td></tr>
+        <tr><td>.AddRow(col1, col2, …)</td><td>添加一行。每列传入一个字符串。第一次调用生成表头行，后续调用生成数据行。较长的单元格文本会自动换行。</td></tr>
+        <tr><td>canvas.DrawTable(table, x, y)</td><td>在指定位置渲染表格。</td></tr>
+        <tr><td>canvas.DrawTable(table, x, y, out float bottom)</td><td>与上面相同，但同时返回最后一行下方的 Y 坐标——便于在表格下方放置内容。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="annotations">
+
+  <!-- ── ANNOTATIONS ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">链接与工具提示</h2>
+    <p class="docs-p">在任意矩形区域上添加可点击的超链接或悬停工具提示。该区域由左上角 <code>(x, y)</code> 加上 <code>width</code> 和 <code>height</code> 定义。</p>
+
+    <pre><span class="tok-kw">var</span> linkStyle = TextStyle.Default
+    .WithColor(PdfColor.Blue).WithUnderline();
+
+canvas.DrawText(<span class="tok-str">"Visit majorsilence.com"</span>, <span class="tok-num">72</span>, <span class="tok-num">110</span>, linkStyle);
+canvas.AddLink(<span class="tok-num">72</span>, <span class="tok-num">96</span>, width: <span class="tok-num">220</span>, height: <span class="tok-num">18</span>,
+    uri: <span class="tok-str">"https://majorsilence.com"</span>);
+
+<span class="tok-cm">// Tooltip (shows in supporting PDF viewers on hover)</span>
+canvas.DrawRectangle(<span class="tok-num">72</span>, <span class="tok-num">140</span>, <span class="tok-num">200</span>, <span class="tok-num">40</span>,
+    ShapeStyle.Filled(PdfColor.LightGray).WithStroke(PdfColor.Gray));
+canvas.DrawText(<span class="tok-str">"Hover for info"</span>, <span class="tok-num">82</span>, <span class="tok-num">165</span>, TextStyle.Default);
+canvas.AddTooltip(<span class="tok-num">72</span>, <span class="tok-num">140</span>, <span class="tok-num">200</span>, <span class="tok-num">40</span>,
+    tooltip: <span class="tok-str">"This text appears on hover."</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="fonts">
+
+  <!-- ── TRUETYPE FONTS ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">TrueType 字体</h2>
+    <p class="docs-p">五种内置标准字体（Helvetica、Times-Roman、Courier、Symbol、ZapfDingbats）覆盖 ASCII + Latin-1。若需要 Unicode 文本、表情符号或 CJK，请嵌入一种 TrueType 字体。</p>
+
+    <h3 class="docs-h3">通过文件路径嵌入</h3>
+    <p class="docs-p">最简单的方式：让 <code>TextStyle</code> 直接指向一个 <code>.ttf</code> 或 <code>.otf</code> 文件。字体在每个文档中只会被读取一次并被缓存。</p>
+    <pre><span class="tok-kw">var</span> custom = TextStyle.Default
+    .WithFontFile(<span class="tok-str">"/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"</span>)
+    .WithSize(<span class="tok-num">14</span>);
+
+canvas.DrawText(<span class="tok-str">"café résumé naïve"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, custom);
+canvas.DrawText(<span class="tok-str">"Bold variant"</span>,      <span class="tok-num">72</span>, <span class="tok-num">96</span>, custom.WithBold());</pre>
+
+    <h3 class="docs-h3">FontRegistry——命名字体族 + 回退链</h3>
+    <p class="docs-p">在一个或多个逻辑名称下注册字体族，定义回退链（当主字体没有相应字形时使用），并将该注册表附加到文档上。画布随后会自动对文本进行分段，将每个字符路由到第一个能够渲染它的字体。</p>
+    <pre><span class="tok-kw">var</span> fonts = <span class="tok-kw">new</span> FontRegistry()
+    <span class="tok-cm">// Register individual variants</span>
+    .AddFamily(<span class="tok-str">"LiberationSans"</span>,
+        regular:    <span class="tok-str">"Fonts/LiberationSans-Regular.ttf"</span>,
+        bold:       <span class="tok-str">"Fonts/LiberationSans-Bold.ttf"</span>,
+        italic:     <span class="tok-str">"Fonts/LiberationSans-Italic.ttf"</span>,
+        boldItalic: <span class="tok-str">"Fonts/LiberationSans-BoldItalic.ttf"</span>)
+    <span class="tok-cm">// Or scan a directory — detects variants from filenames</span>
+    .AddDirectory(<span class="tok-str">"Fonts/"</span>)
+    <span class="tok-cm">// NotoSans fills in any glyph LiberationSans is missing</span>
+    .AddFallback(<span class="tok-str">"NotoSans"</span>);
+
+PdfDocument.Create()
+    .WithFontRegistry(fonts)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        <span class="tok-kw">var</span> style = TextStyle.Default
+            .WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">14</span>);
+
+        canvas.DrawText(<span class="tok-str">"Hello κόσμε мир"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>, style);
+        canvas.DrawText(<span class="tok-str">"Bold text"</span>,  <span class="tok-num">72</span>, <span class="tok-num">96</span>, style.WithBold());
+        canvas.DrawText(<span class="tok-str">"Italic text"</span>, <span class="tok-num">72</span>, <span class="tok-num">118</span>, style.WithItalic());
+    })
+    .Save(<span class="tok-str">"output.pdf"</span>);</pre>
+
+    <div class="docs-note">
+      <code>AddDirectory</code> 期望文件名符合 <code>FamilyName-Regular.ttf</code>、<code>FamilyName-Bold.ttf</code> 等模式。任何已注册字体都无法渲染的字符会被输出为 <code>.notdef</code> 方框——不会抛出异常。使用前可通过 <code>registry.Contains("FamilyName")</code> 检查某字体族是否已成功加载。
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="multipage">
+
+  <!-- ── MULTI-PAGE ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">多页文档</h2>
+    <p class="docs-p">按需多次调用 <code>AddPage</code>。页面会按添加顺序写出。</p>
+
+    <pre><span class="tok-kw">var</span> doc = PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"Report"</span>)
+    .WithAuthor(<span class="tok-str">"Majorsilence"</span>)
+    .WithFontRegistry(fonts);
+
+<span class="tok-kw">string</span>[] chapters = { <span class="tok-str">"Introduction"</span>, <span class="tok-str">"Methods"</span>, <span class="tok-str">"Results"</span> };
+<span class="tok-kw">var</span> title  = TextStyle.Default.WithSize(<span class="tok-num">24</span>).WithBold();
+<span class="tok-kw">var</span> footer = TextStyle.Default.WithSize(<span class="tok-num">9</span>).WithColor(PdfColor.Gray);
+
+<span class="tok-kw">for</span> (<span class="tok-kw">int</span> i = <span class="tok-num">0</span>; i &lt; chapters.Length; i++)
+{
+    <span class="tok-kw">int</span> pageNum = i + <span class="tok-num">1</span>;
+    doc.AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(chapters[i], <span class="tok-num">72</span>, <span class="tok-num">72</span>, title);
+        canvas.DrawText(
+            $<span class="tok-str">"Page {pageNum} of {chapters.Length}"</span>,
+            PageSizes.A4.Width / <span class="tok-num">2</span>, PageSizes.A4.Height - <span class="tok-num">30</span>,
+            footer.WithAlignment(TextAlignment.Center));
+    });
+}
+
+doc.Save(<span class="tok-str">"report.pdf"</span>);</pre>
+
+    <div class="docs-note">
+      <strong>横向页面</strong>——调用 <code>PageSizes.Letter.Landscape()</code>（或任意其他尺寸）即可交换宽度和高度。同一文档内的各页可以自由混用不同的方向。
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="save">
+
+  <!-- ── SAVE ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">保存选项</h2>
+
+    <pre><span class="tok-cm">// Write to a file</span>
+doc.Save(<span class="tok-str">"report.pdf"</span>);
+
+<span class="tok-cm">// Write to any Stream (e.g. an ASP.NET response body)</span>
+doc.Save(Response.Body);
+
+<span class="tok-cm">// Get bytes — useful for returning from an API endpoint</span>
+<span class="tok-kw">byte</span>[] bytes = doc.ToBytes();
+<span class="tok-kw">return</span> File(bytes, <span class="tok-str">"application/pdf"</span>, <span class="tok-str">"report.pdf"</span>);</pre>
+
+    <div class="docs-note">
+      这三种重载都是同步的。如果需要从异步代码中调用而不阻塞线程池，请将其包装在 <code>Task.Run</code> 中。
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="metadata">
+
+  <!-- ── METADATA & VERSION ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">元数据与 PDF 版本</h2>
+    <p class="docs-p">元数据会出现在阅读器的文档属性中。PDF 版本控制文件头和交叉引用格式。</p>
+
+    <pre>PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"Invoice #INV-2026-0042"</span>)
+    .WithAuthor(<span class="tok-str">"Majorsilence Corp"</span>)
+    .WithSubject(<span class="tok-str">"Sales invoice"</span>)
+    .WithCreator(<span class="tok-str">"MyApp 1.0"</span>)
+    <span class="tok-cm">// PDF 1.4 (default) — broadest reader compatibility</span>
+    .WithVersion(PdfVersion.Pdf14)
+    <span class="tok-cm">// PDF 2.0 — adds XMP metadata stream + compressed xref</span>
+    <span class="tok-cm">// .WithVersion(PdfVersion.Pdf20)</span>
+    .AddPage(PageSizes.Letter, canvas => { <span class="tok-cm">/* ... */</span> })
+    .Save(<span class="tok-str">"invoice.pdf"</span>);</pre>
+
+    <table class="api-table">
+      <thead><tr><th>版本</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>PdfVersion.Pdf14</td><td>默认值。<code>%PDF-1.4</code> 文件头。传统交叉引用表。几乎所有 PDF 阅读器都支持。</td></tr>
+        <tr><td>PdfVersion.Pdf20</td><td>ISO 32000-2。<code>%PDF-2.0</code> 文件头。附加到文档目录上的 XMP 元数据流。使用压缩交叉引用流而非普通 xref 表。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="pdfa">
+
+  <!-- ── PDF/A ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">PDF/A 合规</h2>
+    <p class="docs-p"><code>WithConformance</code> 将文档标记为 PDF/A——一种为长期存档而设计的 ISO PDF 子集。该库会自动插入所需的 XMP 元数据流以及一个嵌入的 sRGB ICC 输出意图。所有字体都必须通过 <code>FontRegistry</code> 嵌入；标准 Type 1 字体、加密以及透明度（对于 A-1b 级别）均不被允许。</p>
+
+    <pre><span class="tok-kw">var</span> fonts = <span class="tok-kw">new</span> FontRegistry().AddDirectory(<span class="tok-str">"Fonts/"</span>).AddFallback(<span class="tok-str">"NotoSans"</span>);
+
+PdfDocument.Create()
+    .WithConformance(PdfConformance.PdfA2b)   <span class="tok-cm">// sets PDF 1.7 header automatically</span>
+    .WithFontRegistry(fonts)                   <span class="tok-cm">// embedded fonts are required</span>
+    .WithTitle(<span class="tok-str">"Archived Document"</span>)
+    .WithAuthor(<span class="tok-str">"Majorsilence"</span>)
+    .WithSubject(<span class="tok-str">"Archival demonstration"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Archival content"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">14</span>));
+    })
+    .Save(<span class="tok-str">"archive.pdf"</span>);</pre>
+
+    <h3 class="docs-h3">PdfConformance 级别</h3>
+    <table class="api-table">
+      <thead><tr><th>级别</th><th>基于</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>PdfConformance.PdfA1b</td><td>PDF 1.4</td><td>最大程度的阅读器兼容性。无透明度。广泛用于存档。</td></tr>
+        <tr><td>PdfConformance.PdfA2b</td><td>PDF 1.7</td><td>允许透明度。推荐用于新建档案。</td></tr>
+        <tr><td>PdfConformance.PdfA3b</td><td>PDF 1.7</td><td>与 PDF/A-2b 相同，并额外支持嵌入文件附件。</td></tr>
+      </tbody>
+    </table>
+
+    <div class="docs-note">
+      <strong>B 级别</strong>（视觉可再现性）要求嵌入字体、XMP 元数据和 ICC 输出意图——这些都会由 <code>WithConformance</code> 自动插入。可使用 veraPDF 等 PDF/A 校验工具来确认输出的完全合规性。PDF/A 无法与密码保护或公钥加密同时使用。
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="rtl">
+
+  <!-- ── RIGHT-TO-LEFT ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">从右到左文本</h2>
+    <p class="docs-p">在 <code>TextStyle</code> 上调用 <code>.WithRightToLeft()</code> 可反转码位顺序，以实现视觉上的 RTL 渲染。请将其与 <code>TextAlignment.Right</code> 搭配使用，使 X 坐标成为右侧锚点。希伯来语无需整形引擎即可正确渲染；阿拉伯语会显示视觉反转效果（正确的连字需要借助 HarfBuzz 等外部整形引擎）。</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+
+<span class="tok-cm">// Build a registry with Hebrew and Arabic script fonts</span>
+<span class="tok-kw">var</span> reg = <span class="tok-kw">new</span> FontRegistry()
+    .AddDirectory(<span class="tok-str">"Fonts/"</span>)          <span class="tok-cm">// picks up NotoSansHebrew, NotoSansArabic, etc.</span>
+    .AddFallback(<span class="tok-str">"NotoSans"</span>)
+    .AddFallback(<span class="tok-str">"NotoSansHebrew"</span>)
+    .AddFallback(<span class="tok-str">"NotoSansArabic"</span>);
+
+<span class="tok-cm">// Check whether the optional script font actually loaded</span>
+<span class="tok-kw">string</span> hebrewFamily = reg.Contains(<span class="tok-str">"NotoSansHebrew"</span>) ? <span class="tok-str">"NotoSansHebrew"</span> : <span class="tok-str">"NotoSans"</span>;
+
+<span class="tok-kw">float</span> pageW      = PageSizes.A4.Width;
+<span class="tok-kw">float</span> rightEdge  = pageW - <span class="tok-num">72</span>;  <span class="tok-cm">// right margin anchor</span>
+
+<span class="tok-kw">var</span> rtl = TextStyle.Default
+    .WithFamily(hebrewFamily)
+    .WithSize(<span class="tok-num">16</span>)
+    .WithRightToLeft()
+    .WithAlignment(TextAlignment.Right);
+
+PdfDocument.Create()
+    .WithFontRegistry(reg)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"שלום עולם"</span>, rightEdge, <span class="tok-num">72</span>, rtl.WithSize(<span class="tok-num">24</span>).WithBold());
+        canvas.DrawText(<span class="tok-str">"ספר, ישראל, שלום, אהבה"</span>, rightEdge, <span class="tok-num">110</span>, rtl);
+
+        <span class="tok-cm">// Mix LTR and RTL on the same line</span>
+        <span class="tok-kw">var</span> ltr = TextStyle.Default.WithFamily(<span class="tok-str">"LiberationSans"</span>).WithSize(<span class="tok-num">14</span>);
+        canvas.DrawText(<span class="tok-str">"Hello, World!"</span>, <span class="tok-num">72</span>, <span class="tok-num">160</span>, ltr);
+        canvas.DrawText(<span class="tok-str">"!שלום, עולם"</span>, rightEdge, <span class="tok-num">160</span>, rtl.WithSize(<span class="tok-num">14</span>));
+    })
+    .Save(<span class="tok-str">"rtl.pdf"</span>);</pre>
+
+    <div class="docs-note">
+      <code>NotoSansHebrew</code> 和 <code>NotoSansArabic</code> 已包含在随附的 <code>Majorsilence.Drawing.Common</code> 字体包中，会被 <code>AddDirectory</code> 自动识别。任何已注册字体都无法渲染的字符会显示为 <code>.notdef</code> 方框。
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="security">
+
+  <!-- ── PASSWORD PROTECTION ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">密码保护</h2>
+    <p class="docs-p">对文档进行加密，使阅读者必须提供密码才能打开。您还可以限制阅读者对文档可执行的操作（打印、复制文本等）。</p>
+    <p class="docs-p">该加密使用标准安全处理程序第 4 版（Standard Security Handler Rev 4）、AES-128-CBC——这是 PDF 1.5–1.7 中定义、并被所有主流阅读器支持的算法。</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+<span class="tok-kw">using</span> Majorsilence.Pdf.Security;
+
+<span class="tok-kw">var</span> security = PdfSecurity
+    .Protect(userPassword: <span class="tok-str">"open123"</span>, ownerPassword: <span class="tok-str">"owner456"</span>)
+    .WithPermissions(PdfPermissions.Print | PdfPermissions.CopyText);
+
+PdfDocument.Create()
+    .WithSecurity(security)
+    .WithTitle(<span class="tok-str">"Confidential Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Confidential document"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    })
+    .Save(<span class="tok-str">"protected.pdf"</span>);</pre>
+
+    <h3 class="docs-h3">PdfSecurity 与 PdfPermissions 参考</h3>
+    <table class="api-table">
+      <thead><tr><th>成员</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>PdfSecurity.Protect(user, owner)</td><td>创建一个安全描述符。<code>user</code> 是打开文件所需的密码；<code>owner</code> 可解锁所有限制。</td></tr>
+        <tr><td>.WithPermissions(flags)</td><td>要授予的 <code>PdfPermissions</code> 标志位字段。默认：不授予任何权限（只读）。</td></tr>
+        <tr><td>PdfPermissions.Print</td><td>允许打印。</td></tr>
+        <tr><td>PdfPermissions.CopyText</td><td>允许选择和复制文本。</td></tr>
+        <tr><td>doc.WithSecurity(security)</td><td>在保存前将安全描述符附加到文档上。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="docs-rule" id="signing">
+
+  <!-- ── DIGITAL SIGNATURES ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">数字签名</h2>
+    <p class="docs-p">使用持有私钥的 <code>X509Certificate2</code>，嵌入一个 PKCS#7 分离式数字签名（<code>adbe.pkcs7.detached</code>，SHA-256）。在生产环境中，请从 <code>X509Store</code> 或由受信任 CA 签发的 <code>.pfx</code> 文件中加载证书。</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+<span class="tok-kw">using</span> Majorsilence.Pdf.Security;
+<span class="tok-kw">using</span> System.Security.Cryptography.X509Certificates;
+
+<span class="tok-cm">// Load a certificate with a private key (from file, store, HSM, etc.)</span>
+X509Certificate2 cert = X509CertificateLoader.LoadPkcs12(
+    File.ReadAllBytes(<span class="tok-str">"signer.pfx"</span>), password: <span class="tok-str">"pfxpassword"</span>,
+    X509KeyStorageFlags.Exportable);
+
+<span class="tok-kw">var</span> sigOpts = <span class="tok-kw">new</span> PdfSignatureOptions(cert)
+    .WithReason(<span class="tok-str">"Document approval"</span>)
+    .WithSignerName(<span class="tok-str">"Jane Smith"</span>)
+    .WithLocation(<span class="tok-str">"Toronto, ON"</span>);
+
+PdfDocument.Create()
+    .WithSignature(sigOpts)
+    .WithTitle(<span class="tok-str">"Signed Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Digitally signed document"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">18</span>).WithBold());
+    })
+    .Save(<span class="tok-str">"signed.pdf"</span>);</pre>
+
+    <h3 class="docs-h3">PdfSignatureOptions 参考</h3>
+    <table class="api-table">
+      <thead><tr><th>成员</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>new PdfSignatureOptions(cert)</td><td>基于一个具有可导出私钥的 <code>X509Certificate2</code> 创建签名选项。</td></tr>
+        <tr><td>.WithReason(text)</td><td>写入签名字典的签署原因（会出现在阅读器的签名面板中）。</td></tr>
+        <tr><td>.WithSignerName(name)</td><td>可读的签署人姓名。</td></tr>
+        <tr><td>.WithLocation(location)</td><td>签署的物理或逻辑位置。</td></tr>
+        <tr><td>doc.WithSignature(opts)</td><td>将签名选项附加到文档。签名会在保存时计算并嵌入。</td></tr>
+      </tbody>
+    </table>
+
+    <div class="docs-note">
+      该签名使用 SHA-256 和 AES-128（Rev 4），得到广泛支持。请在 Adobe Acrobat 或兼容的阅读器中打开输出文件以验证签名面板。自签名证书除非被添加到阅读器的信任存储中，否则将显示为不受信任。
+    </div>
+
+    <h3 class="docs-h3">可见签名外观</h3>
+    <p class="docs-p">调用 <code>.WithAppearance()</code> 可在页面上渲染一个可见的签名框——适用于需要可见“签署处”字段的文档。该框会显示边框、“Digitally Signed”文字以及签署人姓名。若不调用该方法，签名在密码学上依然存在，但不可见。</p>
+    <pre><span class="tok-kw">var</span> sigOpts = <span class="tok-kw">new</span> PdfSignatureOptions(cert)
+    .WithReason(<span class="tok-str">"Document approved"</span>)
+    .WithSignerName(<span class="tok-str">"Jane Smith"</span>)
+    .WithLocation(<span class="tok-str">"Toronto, ON"</span>)
+    .WithAppearance(x: <span class="tok-num">72</span>, y: <span class="tok-num">690</span>, width: <span class="tok-num">220</span>, height: <span class="tok-num">60</span>);
+
+PdfDocument.Create()
+    .WithSignature(sigOpts)
+    .AddPage(PageSizes.A4, canvas => { <span class="tok-cm">/* ... content ... */</span> })
+    .Save(<span class="tok-str">"signed.pdf"</span>);</pre>
+  </div>
+
+  <hr class="docs-rule" id="pubkey">
+
+  <!-- ── PUBLIC-KEY ENCRYPTION ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">基于证书的加密</h2>
+    <p class="docs-p">加密一个 PDF，使其只能由特定 X.509 证书私钥的持有者打开——无需共享密码。使用 <code>/Filter /Adobe.PubSec</code>，V=4，AES-128。支持多个接收者证书；任何一个持有者都可以打开该文档。</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+<span class="tok-kw">using</span> Majorsilence.Pdf.Security;
+<span class="tok-kw">using</span> System.Security.Cryptography.X509Certificates;
+
+<span class="tok-cm">// Load the recipient's public certificate (no private key needed at encryption time)</span>
+X509Certificate2 cert = <span class="tok-kw">new</span> X509Certificate2(<span class="tok-str">"recipient.cer"</span>);
+
+<span class="tok-kw">var</span> security = PdfPublicKeySecurity.ForRecipients(cert)
+    .WithPermissions(PdfPermissions.Print | PdfPermissions.CopyText);
+
+PdfDocument.Create()
+    .WithPublicKeySecurity(security)
+    .WithTitle(<span class="tok-str">"Confidential Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Only the certificate holder can open this."</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">14</span>));
+    })
+    .Save(<span class="tok-str">"encrypted.pdf"</span>);
+
+<span class="tok-cm">// Multiple recipients — any one of them can open the document</span>
+<span class="tok-kw">var</span> multi = PdfPublicKeySecurity.ForRecipients(cert1, cert2, cert3);</pre>
+
+    <h3 class="docs-h3">PdfPublicKeySecurity 参考</h3>
+    <table class="api-table">
+      <thead><tr><th>成员</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>PdfPublicKeySecurity.ForRecipients(cert, …)</td><td>为一个或多个接收者证书创建一个公钥安全描述符。每个接收者的公钥都会通过 CMS EnvelopedData（RSA）加密一份文档密钥的副本。</td></tr>
+        <tr><td>.WithPermissions(flags)</td><td>要授予的 <code>PdfPermissions</code> 标志位字段（与密码保护使用相同的标志）。</td></tr>
+        <tr><td>doc.WithPublicKeySecurity(security)</td><td>将该描述符附加到文档。与 <code>WithSecurity</code>（密码）和 <code>WithConformance</code>（PDF/A）互斥。</td></tr>
+      </tbody>
+    </table>
+
+    <div class="docs-note">
+      在生产环境中请提供来自受信任 CA 的真实证书。测试时您可以使用 <code>System.Security.Cryptography.X509Certificates.CertificateRequest</code> 在运行时生成一个自签名证书——具体模式请参见示例项目中的示例 23。
+    </div>
+  </div>
+
+  <hr class="docs-rule" id="merge">
+
+  <!-- ── PDF MERGE ── -->
+  <div class="docs-section">
+    <h2 class="docs-h2">PDF 合并</h2>
+    <p class="docs-p"><code>PdfMerger</code> 将任意数量独立生成的 PDF 字节数组串联成一个文档。每个源 PDF 可以拥有不同的页面尺寸、方向和嵌入字体——这些都会在输出中被保留。</p>
+
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+
+<span class="tok-cm">// Produce two source documents as byte arrays</span>
+<span class="tok-kw">byte</span>[] coverPage = PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"Quarterly Report"</span>)
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawRectangle(<span class="tok-num">0</span>, <span class="tok-num">0</span>, PageSizes.A4.Width, PageSizes.A4.Height,
+            ShapeStyle.Filled(<span class="tok-kw">new</span> PdfColor(<span class="tok-num">30</span>, <span class="tok-num">80</span>, <span class="tok-num">160</span>)));
+        canvas.DrawText(<span class="tok-str">"Quarterly Report — Q2 2026"</span>, <span class="tok-num">72</span>, <span class="tok-num">280</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">36</span>).WithBold().WithColor(PdfColor.White));
+    })
+    .ToBytes();
+
+<span class="tok-kw">byte</span>[] contentPages = PdfDocument.Create()
+    .AddPage(PageSizes.A4, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Financial Summary"</span>, <span class="tok-num">72</span>, <span class="tok-num">72</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">22</span>).WithBold());
+        canvas.DrawText(<span class="tok-str">"Net Income: $1,500,000"</span>, <span class="tok-num">72</span>, <span class="tok-num">120</span>,
+            TextStyle.Default.WithSize(<span class="tok-num">12</span>));
+    })
+    .ToBytes();
+
+<span class="tok-cm">// Merge into a single document</span>
+<span class="tok-kw">byte</span>[] merged = <span class="tok-kw">new</span> PdfMerger()
+    .Add(coverPage)
+    .Add(contentPages)
+    .WithTitle(<span class="tok-str">"Quarterly Report Q2 2026"</span>)
+    .WithAuthor(<span class="tok-str">"Example Corp"</span>)
+    .WithSubject(<span class="tok-str">"Financial Summary"</span>)
+    .WithCreator(<span class="tok-str">"MyApp 2.0"</span>)
+    .Merge();
+
+File.WriteAllBytes(<span class="tok-str">"merged.pdf"</span>, merged);</pre>
+
+    <h3 class="docs-h3">PdfMerger 参考</h3>
+    <table class="api-table">
+      <thead><tr><th>方法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>new PdfMerger()</td><td>创建一个新的合并器。无需任何参数。</td></tr>
+        <tr><td>.Add(pdfBytes)</td><td>将一个 PDF（以 <code>byte[]</code> 形式）的页面追加到合并队列中。可根据需要多次调用；页面按顺序输出。</td></tr>
+        <tr><td>.WithTitle(text)</td><td>合并后文档元数据中的标题。</td></tr>
+        <tr><td>.WithAuthor(text)</td><td>合并后文档元数据中的作者。</td></tr>
+        <tr><td>.WithSubject(text)</td><td>合并后文档元数据中的主题。</td></tr>
+        <tr><td>.WithCreator(text)</td><td>合并后文档元数据中的创建应用程序字符串。</td></tr>
+        <tr><td>.Merge()</td><td>执行合并并以 <code>byte[]</code> 形式返回合并后的 PDF。输出始终为 PDF 1.4。</td></tr>
+      </tbody>
+    </table>
+
+    <div class="docs-note">
+      无论源文档使用什么版本，<code>PdfMerger</code> 的输出始终为 PDF 1.4。
+    </div>
+  </div>
+
+</div>

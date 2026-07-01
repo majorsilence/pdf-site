@@ -1,0 +1,419 @@
+---
+layout: default
+---
+
+<style>
+  /* ── HERO ── */
+  .hero {
+    padding: 84px 48px 24px;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(52px, 7vw, 86px);
+    font-weight: 700;
+    line-height: 0.98;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+  }
+
+  .hero-title span { color: var(--accent); }
+
+  .hero-tagline {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(18px, 2.4vw, 24px);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin: 18px 0 0;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-body {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 24px auto 0;
+    max-width: 560px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 24px;
+    border-radius: 9px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 15px;
+    padding: 13px 24px;
+    border-radius: 9px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .hero-install {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-top: 20px;
+  }
+
+  /* ── PIPELINE ── */
+  .pipeline {
+    display: grid;
+    grid-template-columns: minmax(300px, 480px) 64px minmax(300px, 480px);
+    align-items: center;
+    justify-content: center;
+    padding: 48px 48px 56px;
+    gap: 0;
+  }
+
+  @media (max-width: 900px) {
+    .pipeline {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pipeline-arrow { transform: rotate(90deg); }
+  }
+
+  .pipeline-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .pipeline-card-code {
+    background: var(--code-bg);
+    border: 1px solid var(--code-line);
+  }
+
+  .pipeline-card-pdf {
+    background: #F6F4EC;
+    border: 1px solid #DDD8C9;
+  }
+
+  .pipeline-card-header {
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--code-line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .pipeline-card-code .pipeline-card-header { color: #6E7A92; }
+  .pipeline-card-pdf .pipeline-card-header  { color: #8A8674; border-color: #DDD8C9; }
+
+  .pipeline-card-code .pipeline-card-header .tag { color: #6FA0FF; }
+  .pipeline-card-pdf  .pipeline-card-header .tag { color: #2D63D6; }
+
+  .pipeline-card-code pre {
+    margin: 0;
+    padding: 20px 22px;
+    font-size: 13px;
+    line-height: 1.75;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .pipeline-arrow {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px;
+    color: var(--accent);
+  }
+
+  /* PDF preview inside pipeline */
+  .pdf-preview {
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pdf-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .pdf-doc-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1D201E;
+  }
+
+  .pdf-doc-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: #8A8674;
+    margin-top: 3px;
+  }
+
+  .pdf-barcode {
+    display: flex;
+    gap: 1.5px;
+    align-items: flex-end;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  .pdf-barcode span {
+    background: #1D201E;
+    display: inline-block;
+  }
+
+  .pdf-table-head {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: #5C5A4E;
+    border-top: 2px solid #1D201E;
+    border-bottom: 1px solid #DDD8C9;
+    padding: 7px 0;
+    font-weight: 500;
+  }
+
+  .pdf-table-head span:not(:first-child) { text-align: right; }
+
+  .pdf-table-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: #1D201E;
+  }
+
+  .pdf-table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .pdf-table-row span:not(:first-child) { text-align: right; }
+
+  .pdf-table-total {
+    border-top: 1px solid #DDD8C9;
+    padding-top: 8px;
+    font-weight: 600;
+  }
+
+  /* ── FEATURES ── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 8px 48px 64px;
+  }
+
+  @media (max-width: 700px) {
+    .features { grid-template-columns: 1fr; padding: 8px 20px 48px; }
+    .feature-card { border-left: 1px solid var(--line); border-right: none !important; }
+  }
+
+  .feature-card {
+    padding: 24px 28px;
+    border-left: 1px solid var(--line);
+  }
+
+  .feature-card:last-child { border-right: 1px solid var(--line); }
+
+  .feature-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .feature-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .feature-body {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ── STATS ── */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    padding: 40px 48px 72px;
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .stat-value.accent { color: var(--accent); }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+</style>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">驱动 <a href="https://reporting.majorsilence.com" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">Majorsilence Reporting</a> 的 PDF 引擎</div>
+  <h1 class="hero-title">面向 .NET 的 PDF。<br><span>设计上追求小巧。</span></h1>
+  <p class="hero-tagline">让繁琐的事情变简单。</p>
+  <p class="hero-body">一个现代化、自包含的 .NET 8 &amp; 10 PDF 库。零依赖，无原生二进制文件——只有一个小巧的托管包。三重许可&nbsp;MIT、Apache-2.0 或 BSD-3-Clause，任您选择。</p>
+  <div class="hero-cta">
+    <a href="{{ '/zh/docs/' | relative_url }}" class="btn-primary">立即开始</a>
+    <a href="{{ '/zh/docs/' | relative_url }}" class="btn-secondary">阅读文档</a>
+  </div>
+  <div class="hero-install">$ dotnet add package Majorsilence.Pdf</div>
+</div>
+
+<!-- PIPELINE -->
+<div class="pipeline">
+  <div class="pipeline-card pipeline-card-code">
+    <div class="pipeline-card-header">
+      <span>Program.cs</span><span class="tag">in</span>
+    </div>
+    <pre><span class="tok-kw">using</span> Majorsilence.Pdf;
+
+<span class="tok-kw">var</span> heading = TextStyle.Default
+    .WithFamily(<span class="tok-str">"Helvetica"</span>).WithSize(<span class="tok-num">22</span>).WithBold();
+<span class="tok-kw">var</span> body = TextStyle.Default.WithSize(<span class="tok-num">11</span>);
+
+PdfDocument.Create()
+    .WithTitle(<span class="tok-str">"Sales Summary — Q2 2026"</span>)
+    .AddPage(PageSizes.Letter, canvas =>
+    {
+        canvas.DrawText(<span class="tok-str">"Sales Summary — Q2 2026"</span>,
+            <span class="tok-num">72</span>, <span class="tok-num">72</span>, heading);
+        canvas.DrawLine(<span class="tok-num">72</span>, <span class="tok-num">92</span>, <span class="tok-num">540</span>, <span class="tok-num">92</span>);
+        canvas.DrawText(<span class="tok-str">"North America  12,408  $1.24M"</span>,
+            <span class="tok-num">72</span>, <span class="tok-num">120</span>, body);
+    })
+    .Save(<span class="tok-str">"report.pdf"</span>);</pre>
+  </div>
+
+  <div class="pipeline-arrow">→</div>
+
+  <div class="pipeline-card pipeline-card-pdf">
+    <div class="pipeline-card-header">
+      <span>report.pdf</span><span class="tag">out</span>
+    </div>
+    <div class="pdf-preview">
+      <div class="pdf-title-row">
+        <div>
+          <div class="pdf-doc-title">Sales Summary — Q2 2026</div>
+          <div class="pdf-doc-meta">Generated 2026-06-18 · page 1 of 4</div>
+        </div>
+        <div class="pdf-barcode">
+          <span style="width:2px;height:100%"></span>
+          <span style="width:4px;height:100%"></span>
+          <span style="width:2px;height:100%"></span>
+          <span style="width:2px;height:100%;margin-left:3px"></span>
+          <span style="width:5px;height:100%"></span>
+          <span style="width:2px;height:100%"></span>
+          <span style="width:3px;height:100%;margin-left:3px"></span>
+          <span style="width:2px;height:100%"></span>
+        </div>
+      </div>
+      <div class="pdf-table-head">
+        <span>Region</span><span>Units</span><span>Revenue</span>
+      </div>
+      <div class="pdf-table-rows">
+        <div class="pdf-table-row"><span>North America</span><span>12,408</span><span>$1.24M</span></div>
+        <div class="pdf-table-row"><span>Europe</span><span>9,112</span><span>$0.97M</span></div>
+        <div class="pdf-table-row"><span>Asia-Pacific</span><span>7,654</span><span>$0.81M</span></div>
+        <div class="pdf-table-row pdf-table-total"><span>Total</span><span>29,174</span><span>$3.02M</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="feature-card">
+    <div class="feature-num">01</div>
+    <div class="feature-title">零依赖</div>
+    <p class="feature-body">只有一个包。无需部署原生库，无需审计传递性 NuGet 依赖树。</p>
+  </div>
+  <div class="feature-card">
+    <div class="feature-num">02</div>
+    <div class="feature-title">自包含</div>
+    <p class="feature-body">纯托管代码，对裁剪（trim）和 AOT 友好。在运行时支持的任何环境中表现一致。</p>
+  </div>
+  <div class="feature-card">
+    <div class="feature-num">03</div>
+    <div class="feature-title">现代化 API</div>
+    <p class="feature-body">一个小巧的流式接口——页面、文本、表格、图像。异步友好，可空性清晰。</p>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-value accent">0</div>
+    <div class="stat-label">运行时依赖项</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">~85KB</div>
+    <div class="stat-label">包大小</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">NETSTANDARD 2.0, .NET 8, &amp; 10</div>
+    <div class="stat-label">跨平台</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value accent">MIT</div>
+    <div class="stat-label">开源</div>
+  </div>
+</div>

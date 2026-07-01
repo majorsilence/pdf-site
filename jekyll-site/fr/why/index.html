@@ -1,0 +1,426 @@
+---
+layout: default
+title: "Pourquoi Majorsilence.Pdf ?"
+description: "Comment Majorsilence.Pdf se compare à iText, QuestPDF, PdfSharp et aux outils HTML vers PDF — et quand se tourner vers autre chose."
+---
+
+<style>
+  .why-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .why-back {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+
+  .why-back:hover { text-decoration: underline; }
+
+  .why-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .why-title {
+    font-family: 'Newsreader', serif;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 20px;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+
+  @media (max-width: 600px) {
+    .why-title { font-size: 36px; }
+  }
+
+  .why-lead {
+    font-family: 'Newsreader', serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0 0 36px;
+  }
+
+  hr.why-rule {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 44px 0;
+  }
+
+  .why-h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+
+  .why-h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 28px 0 8px;
+  }
+
+  .why-p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+
+  .why-section {
+    margin-bottom: 0;
+  }
+
+  /* comparison table */
+  .cmp-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 24px;
+  }
+
+  .cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    min-width: 620px;
+  }
+
+  .cmp-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--line);
+    white-space: nowrap;
+  }
+
+  .cmp-table th:first-child {
+    min-width: 160px;
+  }
+
+  .cmp-table td {
+    padding: 11px 14px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .cmp-table td:first-child {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .cmp-table tr:last-child td { border-bottom: none; }
+
+  .cmp-table tr.cmp-highlight td {
+    background: var(--accent-soft);
+  }
+
+  .cmp-table tr.cmp-highlight td:first-child {
+    color: var(--accent);
+  }
+
+  /* pill badges */
+  .pill {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .pill-green  { background: rgba(16,185,129,0.13); color: #059669; }
+  .pill-yellow { background: rgba(245,158,11,0.13); color: #B45309; }
+  .pill-red    { background: rgba(239,68,68,0.12);  color: #DC2626; }
+  .pill-blue   { background: var(--accent-soft);    color: var(--accent); }
+
+  /* use/avoid cards */
+  .use-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 620px) {
+    .use-grid { grid-template-columns: 1fr; }
+  }
+
+  .use-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+
+  .use-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .use-card-title.green { color: #059669; }
+  .use-card-title.yellow { color: #B45309; }
+
+  .use-card ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  .use-card ul li { margin-bottom: 4px; }
+
+  /* alt library entries */
+  .alt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 8px;
+  }
+
+  .alt-entry {
+    border-left: 3px solid var(--line);
+    padding: 4px 0 4px 18px;
+  }
+
+  .alt-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .alt-when {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* note box */
+  .why-note {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+</style>
+
+<div class="why-wrap">
+  <a href="{{ '/fr/' | relative_url }}" class="why-back">← Accueil</a>
+
+  <div class="why-eyebrow">Comparaison honnête</div>
+  <h1 class="why-title">Pourquoi Majorsilence.Pdf ?</h1>
+  <p class="why-lead">Les bibliothèques PDF pour .NET ne manquent pas. Voici un regard lucide sur la place qu'occupe Majorsilence.Pdf, ses points forts, et les cas où vous devriez plutôt vous tourner vers autre chose.</p>
+
+  <hr class="why-rule">
+
+  <!-- ── COMPARISON TABLE ── -->
+  <div class="why-section">
+    <h2 class="why-h2">Comparaison des bibliothèques</h2>
+    <p class="why-p">Le tableau ci-dessous couvre les bibliothèques PDF .NET les plus couramment utilisées. Toutes les informations reposent sur la documentation publique disponible mi-2026.</p>
+
+    <div class="cmp-table-wrap">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>Bibliothèque</th>
+            <th>Licence</th>
+            <th>Dépendances</th>
+            <th>Taille du package</th>
+            <th>Modèle d'API</th>
+            <th>Support .NET</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cmp-highlight">
+            <td>Majorsilence.Pdf</td>
+            <td><span class="pill pill-green">MIT / Apache / BSD</span></td>
+            <td><span class="pill pill-green">Zéro</span></td>
+            <td>~75 KB</td>
+            <td>Canvas / fluide</td>
+            <td>NS2.0, .NET 8 &amp; 10</td>
+          </tr>
+          <tr>
+            <td>iText 7</td>
+            <td><span class="pill pill-yellow">AGPL ou commerciale</span></td>
+            <td>Plusieurs références NuGet</td>
+            <td>~6 Mo</td>
+            <td>Arbre document/élément</td>
+            <td>.NET Standard 2.0+</td>
+          </tr>
+          <tr>
+            <td>QuestPDF</td>
+            <td><span class="pill pill-yellow">Communautaire / commerciale</span></td>
+            <td>SkiaSharp (natif)</td>
+            <td>~10 Mo (natif inclus)</td>
+            <td>Moteur de mise en page fluide</td>
+            <td>.NET 6+</td>
+          </tr>
+          <tr>
+            <td>PdfSharp</td>
+            <td><span class="pill pill-green">MIT</span></td>
+            <td>Aucune (pour le cœur)</td>
+            <td>~400 Ko</td>
+            <td>Dessin de style GDI</td>
+            <td>.NET 6+ (v0.1.x NS2.0)</td>
+          </tr>
+          <tr>
+            <td>Syncfusion PDF</td>
+            <td><span class="pill pill-yellow">Commerciale / communautaire</span></td>
+            <td>Suite Syncfusion</td>
+            <td>~4 Mo</td>
+            <td>Arbre document/élément</td>
+            <td>.NET Standard 2.0+</td>
+          </tr>
+          <tr>
+            <td>Puppeteer / wkhtmltopdf</td>
+            <td><span class="pill pill-green">MIT (Puppeteer)</span></td>
+            <td><span class="pill pill-red">Binaire natif requis</span></td>
+            <td>50–150 Mo (navigateur)</td>
+            <td>Rendu HTML → PDF</td>
+            <td>Toute plateforme (via CLI/pont)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="why-p">Le palier « Communautaire » de QuestPDF est gratuit pour les organisations dont le chiffre d'affaires annuel est inférieur à 1 M$ USD ; au-delà, une licence payante est requise. iText 7 exige une licence commerciale pour les logiciels à code source fermé. Syncfusion propose une licence communautaire gratuite pour les développeurs indépendants et les petites équipes.</p>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── WHEN TO USE ── -->
+  <div class="why-section">
+    <h2 class="why-h2">Quand choisir Majorsilence.Pdf</h2>
+
+    <div class="use-grid">
+      <div class="use-card">
+        <div class="use-card-title green">Bon choix</div>
+        <ul>
+          <li>Zéro dépendance au runtime est une exigence stricte — conteneurs, AWS Lambda, compilation AOT, ou audits de sécurité rigoureux</li>
+          <li>Vous avez besoin d'une licence MIT, Apache-2.0 ou BSD-3-Clause, sans complication AGPL</li>
+          <li>Vous voulez une base de code petite et auditable, sans binaires natifs à gérer</li>
+          <li>Votre modèle mental est le dessin par coordonnées de canevas — placer du texte en (x, y), tracer des lignes, intégrer des images</li>
+          <li>Vous créez des factures, rapports, certificats, reçus ou exports de données dont vous contrôlez la mise en page</li>
+          <li>La compatibilité trim ou la compilation AOT compte (démarrages à froid serverless, .NET embarqué)</li>
+          <li>Vous voulez déployer sur Windows, Linux et macOS sans vous soucier de bibliothèques natives de rendu de polices</li>
+        </ul>
+      </div>
+      <div class="use-card">
+        <div class="use-card-title yellow">Moins adapté</div>
+        <ul>
+          <li>Vous devez lire, modifier ou fusionner des PDF existants complexes avec annotations, AcroForms ou XFA</li>
+          <li>Une certification de conformité PDF/A ou PDF/UA est exigée par un organisme réglementaire</li>
+          <li>Vous préférez un modèle de mise en page fluide (paragraphes qui s'enroulent automatiquement, tableaux qui se paginent) plutôt que des coordonnées explicites</li>
+          <li>Vous avez besoin d'un rendu de qualité production de l'arabe façonné ou d'un rendu de texte BiDi complexe</li>
+          <li>Votre contenu réside déjà dans des modèles HTML/CSS et un rendu navigateur au pixel près est essentiel</li>
+          <li>Vous avez besoin de signatures numériques horodatées avancées (PKCS#12 avec TSA) ou de validation à long terme (PAdES LTV)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── ALTERNATIVES ── -->
+  <div class="why-section">
+    <h2 class="why-h2">Quand se tourner vers autre chose</h2>
+    <p class="why-p">Voici des recommandations honnêtes. Choisissez l'outil adapté à vos contraintes.</p>
+
+    <div class="alt-list">
+      <div class="alt-entry">
+        <div class="alt-name">iText 7</div>
+        <div class="alt-when">Si vous avez besoin de l'ensemble de fonctionnalités PDF le plus complet disponible en .NET — manipulation d'AcroForms, signatures numériques PAdES/LTV, création PDF/A et PDF/UA, rédaction, ou lecture et modification de PDF existants complexes — et que vous pouvez utiliser la licence AGPL ou en acheter une commerciale.</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">QuestPDF</div>
+        <div class="alt-when">Si vous préférez raisonner en termes de lignes, colonnes et contenu qui s'écoule (un moteur de mise en page plutôt qu'un canevas de dessin), et que votre chiffre d'affaires est en dessous du seuil du palier communautaire. Le modèle de document fluide de QuestPDF excelle pour les documents riches et denses en contenu où la pagination automatique compte plus que le placement au pixel près.</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">PdfSharp</div>
+        <div class="alt-when">Si vous voulez une autre bibliothèque MIT sans dépendance, avec une API de dessin de style GDI, et que vous ciblez .NET 6+. PdfSharp est une alternative solide, avec une communauté plus large et une histoire plus longue. Les deux bibliothèques ont des forces similaires ; évaluez le style d'API pour voir lequel convient le mieux à votre équipe.</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">Puppeteer / Playwright / wkhtmltopdf</div>
+        <div class="alt-when">Si le contenu de votre document est déjà rédigé en HTML + CSS — par exemple une facture basée sur un modèle rendu par une vue Razor — et que vous avez besoin d'un rendu au pixel près par un moteur de navigateur (polices web, CSS grid, images d'arrière-plan). Le compromis est une grosse dépendance à un binaire natif et des temps de génération plus lents.</div>
+      </div>
+
+      <div class="alt-entry">
+        <div class="alt-name">Syncfusion / DevExpress / Telerik</div>
+        <div class="alt-when">Si vous êtes déjà sous licence pour l'une de ces suites de composants et que vous voulez un fournisseur unique pour tous vos besoins d'interface utilisateur et de génération de documents. Les bibliothèques PDF fournies dans ces suites sont complètes et bien prises en charge au sein de leurs écosystèmes.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="why-rule">
+
+  <!-- ── DESIGN PHILOSOPHY ── -->
+  <div class="why-section">
+    <h2 class="why-h2">Philosophie de conception</h2>
+    <p class="why-p">La plupart des bibliothèques PDF sont nées à une époque où .NET signifiait Windows, où NuGet était jeune, et où « zéro dépendance » n'était pas un objectif de conception. Elles ont accumulé des fonctionnalités, du code natif et une complexité de licence au fil du temps.</p>
+    <p class="why-p">Majorsilence.Pdf part de contraintes différentes :</p>
+
+    <div class="why-note">
+      <strong>Éprouvé en production.</strong> Majorsilence.Pdf est le moteur de rendu PDF qui propulse <a href="https://reporting.majorsilence.com" style="color:var(--accent);">Majorsilence Reporting</a>. Ce n'est pas un projet secondaire — c'est la bibliothèque qui s'exécute lorsque Reporting génère de vrais documents.
+    </div>
+
+    <h3 class="why-h3">Rendre le fastidieux simple.</h3>
+    <p class="why-p">Générer un PDF — une facture, un certificat, un export de données — devrait prendre une poignée de lignes, pas une page de code répétitif. La surface de la bibliothèque est volontairement réduite : un document, des pages, un canevas. Vous placez des éléments. Vous enregistrez. C'est terminé.</p>
+
+    <h3 class="why-h3">Zéro doit vouloir dire zéro.</h3>
+    <p class="why-p">Pas « zéro au runtime si vous installez le pack de plateforme » ni « zéro sauf si vous utilisez des polices ». Un seul <code>dotnet add package</code> et rien d'autre. Aucun arbre transitif à auditer, aucun binaire natif à inclure dans votre image de conteneur, aucun risque AGPL à examiner avec le service juridique.</p>
+
+    <h3 class="why-h3">Code entièrement managé.</h3>
+    <p class="why-p">Toute la bibliothèque est en IL. Elle se trime proprement, se compile en avance de phase (AOT), et fonctionne de la même façon sur Windows, Linux, macOS, ARM et x64 — sans sélection conditionnelle d'assets natifs ni détection de fonctionnalités au runtime.</p>
+
+    <div class="why-note">
+      <strong>Triple licence.</strong> Choisissez celle qui convient à votre projet parmi MIT, Apache-2.0 ou BSD-3-Clause. Il n'y a pas de palier AGPL, pas de séparation communautaire/commerciale, et pas de seuil de revenu qui change vos obligations.
+    </div>
+  </div>
+
+</div>
